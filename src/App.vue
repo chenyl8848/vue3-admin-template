@@ -1,13 +1,16 @@
 <template>
-  <div class="box">
-    <h1>hello world</h1>
-    <el-button type="primary" :icon="Plus" @click="handler">测试</el-button>
-    <SvgIcon name="music" color="red"></SvgIcon>
+  <div>
+    <router-view></router-view>
+    <!--    <h1>hello world</h1>-->
+    <!--    <el-button type="primary" :icon="Plus" @click="handler">测试</el-button>-->
+    <!--    <SvgIcon name="music" color="red"></SvgIcon>-->
   </div>
 </template>
 
 <script setup lang="ts">
 import { Plus } from '@element-plus/icons-vue'
+import { login } from '@/api/user'
+import { loginRequest } from '@/api/user/type'
 
 const handler = () => {
   // import.meta.env 获取环境变量信息
@@ -22,6 +25,14 @@ const handler = () => {
   //       "SSR": false
   // }
   console.log(import.meta.env)
+  let loginForm: loginRequest = { username: 'admin', password: '111111' }
+  login(loginForm)
+    .then((res) => {
+      console.log(res)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
 }
 </script>
 
@@ -29,7 +40,7 @@ const handler = () => {
 .box {
   width: 600px;
   height: 400px;
-  background: black;
+  background: white;
 
   h1 {
     color: $color;
