@@ -15,6 +15,8 @@ import globalComponent from '@/components/index'
 import '@/styles/index.scss'
 // 引入路由
 import router from '@/router'
+// 引入 store
+import store from '@/store'
 
 // 获取应用实例
 const app = createApp(App)
@@ -30,6 +32,9 @@ app.use(globalComponent)
 
 // 注册路由
 app.use(router)
+
+// 注册 store
+app.use(store)
 
 // 挂载应用
 app.mount('#app')

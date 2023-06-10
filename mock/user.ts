@@ -44,11 +44,11 @@ export default [
       )
       // 没有用户返回失败信息
       if (!checkUser) {
-        return { code: 201, data: { message: '账号或者密码不正确' } }
+        return { code: 201, data: null, message: '账号或者密码不正确' }
       }
       // 如果有返回成功信息
       const { token } = checkUser
-      return { code: 200, data: { token } }
+      return { code: 200, data: token, message: '登录成功过' }
     },
   },
   // 获取用户信息
@@ -62,10 +62,10 @@ export default [
       const checkUser = createUserList().find((item) => item.token === token)
       // 没有返回失败的信息
       if (!checkUser) {
-        return { code: 201, data: { message: '获取用户信息失败' } }
+        return { code: 201, data: null, message: '获取用户信息失败' }
       }
       // 如果有返回成功信息
-      return { code: 200, data: { checkUser } }
+      return { code: 200, data: checkUser, message: '获取用户信息成功' }
     },
   },
 ]
