@@ -1,3 +1,9 @@
-// 给项目提供 scss 的全局变量
-// 设置全局颜色
-$color: green;
+// 项目 scss 的全局变量
+
+// layout 左侧宽度
+$layout-sidebar-width: 250px;
+$layout-sidebar-min-width: 50px;
+$layout-sidebar-background-color: #001529;
+
+// layout sidebar 高度
+$layout-navbar-height: 50px;

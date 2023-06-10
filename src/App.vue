@@ -42,8 +42,8 @@ const handler = () => {
   height: 400px;
   background: white;
 
-  h1 {
-    color: $color;
-  }
+  //h1 {
+  //  color: $color;
+  //}
 }
 </style>
