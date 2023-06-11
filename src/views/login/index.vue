@@ -115,7 +115,7 @@ const login = async () => {
 
     loading.value = true
     await userStore.userLogin(loginForm)
-    $router.push("/")
+    $router.push('/')
     ElNotification({
       title: 'Success',
       message: '登录成功',

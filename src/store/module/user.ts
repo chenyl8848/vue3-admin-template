@@ -2,12 +2,14 @@
 import { defineStore } from 'pinia'
 import { loginRequest, loginResponse } from '@/api/user/type'
 import { login } from '@/api/user/index'
-import {SET_TOKEN,GET_TOKEN } from '@/utils/token'
+import { SET_TOKEN, GET_TOKEN } from '@/utils/token'
+import { constantRoute } from '@/router/routes'
 // 定义 userStore
 const useUserStore = defineStore('User', {
   state: () => {
     return {
-      token:GET_TOKEN,
+      token: GET_TOKEN,
+      menuList: constantRoute,
     }
   },
   actions: {

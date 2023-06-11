@@ -16,7 +16,6 @@
 import Sidebar from '@/layout/sidebar/index.vue'
 import Navbar from '@/layout/navbar/index.vue'
 import Main from '@/layout/main/index.vue'
-
 </script>
 
 <style lang="scss" scoped>
