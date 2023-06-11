@@ -2,7 +2,11 @@
   <template v-for="(item, index) in menuList">
     <!-- 没有子路由 -->
     <template v-if="!item.children">
-      <el-menu-item :index="item.path" v-if="!item.meta.isHidden" @click="routeJump">
+      <el-menu-item
+        :index="item.path"
+        v-if="!item.meta.isHidden"
+        @click="routeJump"
+      >
         <template #title>
           <el-icon>
             <component :is="item.meta.icon"></component>
@@ -50,7 +54,7 @@
 
 <script lang="ts" setup>
 import { defineProps } from 'vue'
-import {useRouter} from "vue-router";
+import { useRouter } from 'vue-router'
 
 defineProps(['menuList'])
 let $router = useRouter()

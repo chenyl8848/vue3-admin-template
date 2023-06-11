@@ -14,10 +14,10 @@ export const constantRoute = [
     path: '/',
     component: () => import('@/layout/index.vue'),
     name: 'layout',
-    meta: {
-      title: '主页',
-      isHidden: true,
-    },
+    // meta: {
+    //   title: '主页',
+    //   isHidden: true,
+    // },
     redirect: '/home',
     children: [
       {
@@ -41,6 +41,7 @@ export const constantRoute = [
       isHidden: true,
       icon: 'Lock',
     },
+    redirect: '/auth/user',
     children: [
       {
         path: '/auth/user',

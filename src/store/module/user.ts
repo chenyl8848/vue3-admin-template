@@ -10,6 +10,9 @@ const useUserStore = defineStore('User', {
     return {
       token: GET_TOKEN,
       menuList: constantRoute,
+      username: 'admin',
+      avater:
+        'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     }
   },
   actions: {

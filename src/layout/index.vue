@@ -1,12 +1,12 @@
 <template>
   <div class="layout-container">
-    <div class="layout-sidebar">
+    <div class="layout-sidebar" :class="{ fold: isFold }">
       <Sidebar></Sidebar>
     </div>
-    <div class="layout-navbar">
+    <div class="layout-navbar" :class="{ fold: isFold }">
       <Navbar></Navbar>
     </div>
-    <div class="layout-main">
+    <div class="layout-main" :class="{ fold: isFold }">
       <Main></Main>
     </div>
   </div>
@@ -16,6 +16,15 @@
 import Sidebar from '@/layout/sidebar/index.vue'
 import Navbar from '@/layout/navbar/index.vue'
 import Main from '@/layout/main/index.vue'
+import { onMounted, ref } from 'vue'
+import $mitt from '@/utils/mitt'
+
+let isFold = ref()
+onMounted(() => {
+  $mitt.on('isFold', (params: boolean) => {
+    isFold.value = params
+  })
+})
 </script>
 
 <style lang="scss" scoped>
@@ -29,6 +38,10 @@ import Main from '@/layout/main/index.vue'
     width: $layout-sidebar-width;
     height: 100vh;
     background-color: $layout-sidebar-background-color;
+
+    &.fold {
+      width: $layout-sidebar-min-width;
+    }
   }
 
   .layout-navbar {
@@ -38,6 +51,11 @@ import Main from '@/layout/main/index.vue'
     top: 0px;
     left: $layout-sidebar-width;
     transition: all 0.3s;
+
+    &.fold {
+      width: calc(100% - $layout-sidebar-min-width);
+      left: $layout-sidebar-min-width;
+    }
   }
 
   .layout-main {
@@ -49,6 +67,11 @@ import Main from '@/layout/main/index.vue'
     padding: 20px;
     overflow: auto;
     transition: all 0.3s;
+
+    &.fold {
+      width: calc(100% - $layout-sidebar-min-width);
+      left: $layout-sidebar-min-width;
+    }
   }
 }
 </style>

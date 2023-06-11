@@ -9,6 +9,7 @@
         background-color="#001529"
         text-color="white"
         active-text-color="yellowgreen"
+        :collapse="isFold"
       >
         <Menu :menuList="menuList"></Menu>
       </el-menu>
@@ -20,9 +21,18 @@
 import Logo from '@/layout/sidebar/logo/index.vue'
 import Menu from '@/layout/sidebar/menu/index.vue'
 import useUserStore from '@/store/module/user'
+import { onMounted, ref } from 'vue'
+import $mitt from '@/utils/mitt'
 
 let userStore = useUserStore()
 const menuList = userStore.menuList
+let isFold = ref()
+
+onMounted(() => {
+  $mitt.on('isFold', (param: boolean) => {
+    isFold.value = param
+  })
+})
 </script>
 
 <style scoped lang="scss">
