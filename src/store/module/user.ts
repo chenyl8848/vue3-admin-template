@@ -11,7 +11,7 @@ const useUserStore = defineStore('User', {
       token: GET_TOKEN(),
       menuList: constantRoute,
       username: '',
-      avater: '',
+      avatar: '',
     }
   },
   actions: {
@@ -33,7 +33,7 @@ const useUserStore = defineStore('User', {
       const result: userInfoResponse = await getUserInfo()
       if (result.code === 200) {
         this.username = result.data.username
-        this.avater = result.data.avatar
+        this.avatar = result.data.avatar
         return 'ok'
       } else {
         return Promise.reject(new Error(result.message))

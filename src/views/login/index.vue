@@ -16,7 +16,7 @@
             <el-input
               v-model="loginForm.username"
               placeholder="请输入用户名"
-              :prefix-icon="User"
+              prefix-icon="User"
               clearable
             ></el-input>
           </el-form-item>
@@ -25,7 +25,7 @@
               type="password"
               v-model="loginForm.password"
               placeholder="请输入密码"
-              :prefix-icon="Lock"
+              prefix-icon="Lock"
               clearable
               show-password
             ></el-input>
@@ -51,6 +51,7 @@ import { reactive, ref } from 'vue'
 import useUserStore from '@/store/module/user'
 import { useRoute, useRouter } from 'vue-router'
 import { ElNotification, FormInstance, FormRules } from 'element-plus'
+import { getTime } from '@/utils/time'
 
 // 获取用户信息相关仓库
 let userStore = useUserStore()
@@ -117,8 +118,8 @@ const login = async () => {
     let redirect: string = $route.query.redirect as string
     $router.push({ path: redirect || '/' })
     ElNotification({
-      title: 'Success',
-      message: '登录成功',
+      title: `Hi,${getTime()}好`,
+      message: '欢迎回来',
       type: 'success',
     })
     loading.value = false

@@ -4,10 +4,15 @@ import store from '@/store'
 import { GET_TOKEN } from '@/utils/token'
 import useUserStore from '@/store/module/user'
 import setting from '@/setting'
+import NProgress from 'nprogress'
+//引入进度条样式
+import 'nprogress/nprogress.css'
+NProgress.configure({ showSpinner: false })
 
 let userStore = useUserStore(store)
 
 router.beforeEach((to, from, next) => {
+  NProgress.start()
   // 获取用户 token
   let token = GET_TOKEN()
   // 获取用户 username
@@ -36,4 +41,5 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach((to, from, next) => {
   document.title = `${setting.DOCUMENT_TITLE} - ${to.meta.title}`
+  NProgress.done()
 })

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <img :src="userStore.avater" />
+    <img :src="userStore.avatar" />
     <el-dropdown>
       <span class="el-dropdown-link">
         {{ userStore.username }}
