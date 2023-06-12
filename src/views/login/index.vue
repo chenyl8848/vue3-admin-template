@@ -50,7 +50,7 @@
 import { User, Lock } from '@element-plus/icons-vue'
 import { reactive, ref } from 'vue'
 import useUserStore from '@/store/module/user'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { ElNotification, FormInstance, FormRules } from 'element-plus'
 import validate = WebAssembly.validate
 
@@ -58,6 +58,7 @@ import validate = WebAssembly.validate
 let userStore = useUserStore()
 // 获取路由管理器
 let $router = useRouter()
+let $route = useRoute()
 // 定义变量控制登录按钮加载效果
 let loading = ref(false)
 // 定义登录表单
@@ -115,7 +116,8 @@ const login = async () => {
 
     loading.value = true
     await userStore.userLogin(loginForm)
-    $router.push('/')
+    let redirect: string = $route.query.redirect as string
+    $router.push({ path: redirect || '/' })
     ElNotification({
       title: 'Success',
       message: '登录成功',

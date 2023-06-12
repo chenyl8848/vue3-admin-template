@@ -10,6 +10,7 @@
         text-color="white"
         active-text-color="yellowgreen"
         :collapse="isFold"
+        :default-active="$route.path"
       >
         <Menu :menuList="menuList"></Menu>
       </el-menu>
@@ -23,6 +24,8 @@ import Menu from '@/layout/sidebar/menu/index.vue'
 import useUserStore from '@/store/module/user'
 import { onMounted, ref } from 'vue'
 import $mitt from '@/utils/mitt'
+import { useRoute } from 'vue-router'
+let $route = useRoute()
 
 let userStore = useUserStore()
 const menuList = userStore.menuList

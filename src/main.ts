@@ -15,6 +15,8 @@ import globalComponent from '@/components/index'
 import '@/styles/index.scss'
 // 引入路由
 import router from '@/router'
+// 引入路由全局守卫
+import '@/utils/permission'
 // 引入 store
 import store from '@/store'
 

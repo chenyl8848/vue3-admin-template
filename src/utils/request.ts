@@ -2,6 +2,10 @@
 // 引入 axios
 import axios, { AxiosInstance } from 'axios'
 import { ElMessage } from 'element-plus'
+import { GET_TOKEN } from '@/utils/token'
+import store from '@/store'
+import useUserStore from '@/store/module/user'
+let userStore = useUserStore(store)
 
 // 1、创建 axios 实例
 let request: AxiosInstance = axios.create({
@@ -14,7 +18,7 @@ let request: AxiosInstance = axios.create({
 // 2、设置请求拦截器
 request.interceptors.request.use((config) => {
   // 给 config 配置请求头
-
+  config.headers.token = userStore.token
   // 返回配置对象
   return config
 })

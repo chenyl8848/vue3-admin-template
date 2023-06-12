@@ -1,6 +1,6 @@
 <template>
   <div class="layout-container">
-    <div class="layout-sidebar" :class="{ fold: isFold }">
+    <div class="layout-sidebar">
       <Sidebar></Sidebar>
     </div>
     <div class="layout-navbar" :class="{ fold: isFold }">
@@ -67,6 +67,7 @@ onMounted(() => {
     padding: 20px;
     overflow: auto;
     transition: all 0.3s;
+    background-color: white;
 
     &.fold {
       width: calc(100% - $layout-sidebar-min-width);
