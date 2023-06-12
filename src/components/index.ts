@@ -11,7 +11,7 @@ const allGlobalComponent = {
 // 对外暴露一个插件
 export default {
   // 一定要叫做 install 方法
-  install(app) {
+  install(app: any) {
     // 遍历所有的全局组件并注册成全局组件
     Object.keys(allGlobalComponent).forEach((key) => {
       app.component(key, allGlobalComponent[key])

@@ -38,6 +38,7 @@ onMounted(() => {
     width: $layout-sidebar-width;
     height: 100vh;
     background-color: $layout-sidebar-background-color;
+    transition: all 0.3s;
 
     &.fold {
       width: $layout-sidebar-min-width;
@@ -67,7 +68,7 @@ onMounted(() => {
     padding: 20px;
     overflow: auto;
     transition: all 0.3s;
-    background-color: white;
+    //background-color: #ffffff;
 
     &.fold {
       width: calc(100% - $layout-sidebar-min-width);

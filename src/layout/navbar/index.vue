@@ -7,6 +7,7 @@
       <Setting></Setting>
     </div>
   </div>
+  <el-divider />
 </template>
 
 <script lang="ts" setup>
@@ -20,12 +21,14 @@ import Setting from '@/layout/navbar/setting/index.vue'
   height: $layout-navbar-height;
   display: flex;
   justify-content: space-between;
-  background-image: linear-gradient(
-    to right,
-    rgb(232, 223, 223),
-    rgb(201, 178, 178),
-    rgb(197, 165, 165)
-  );
+
+  // 背景颜色渐变
+  //background-image: linear-gradient(
+  //  to right,
+  //  rgb(232, 223, 223),
+  //  rgb(201, 178, 178),
+  //  rgb(197, 165, 165)
+  //);
 
   .navbar-left {
     display: flex;
@@ -37,5 +40,9 @@ import Setting from '@/layout/navbar/setting/index.vue'
     display: flex;
     align-items: center;
   }
+}
+
+.el-divider--horizontal {
+  margin: 0;
 }
 </style>

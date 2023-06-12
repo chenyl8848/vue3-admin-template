@@ -47,12 +47,10 @@
 </template>
 
 <script lang="ts" setup>
-import { User, Lock } from '@element-plus/icons-vue'
 import { reactive, ref } from 'vue'
 import useUserStore from '@/store/module/user'
 import { useRoute, useRouter } from 'vue-router'
 import { ElNotification, FormInstance, FormRules } from 'element-plus'
-import validate = WebAssembly.validate
 
 // 获取用户信息相关仓库
 let userStore = useUserStore()

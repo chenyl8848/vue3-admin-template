@@ -7,7 +7,6 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps } from 'vue'
 // 接收父组件传递过来的参数
 defineProps({
   // xlink:href 属性值的前缀
