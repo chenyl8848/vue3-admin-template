@@ -7,9 +7,11 @@ import setting from '@/setting'
 import NProgress from 'nprogress'
 //引入进度条样式
 import 'nprogress/nprogress.css'
+import useTagsViewStore from '@/store/module/tagsView'
 NProgress.configure({ showSpinner: false })
 
 let userStore = useUserStore(store)
+let tagsViewStore = useTagsViewStore(store)
 
 router.beforeEach((to, from, next) => {
   NProgress.start()
@@ -19,15 +21,19 @@ router.beforeEach((to, from, next) => {
   let username = userStore.username
 
   if (token) {
-    if (username) {
-      next()
+    if (to.path === '/login') {
+      next({ path: '/' })
     } else {
-      // 获取用户信息
-      try {
-        userStore.getUserInfo()
+      if (username) {
         next()
-      } catch (error) {
-        next({ path: '/login' })
+      } else {
+        // 获取用户信息
+        try {
+          userStore.getUserInfo()
+          next()
+        } catch (error) {
+          next({ path: '/login' })
+        }
       }
     }
   } else {
@@ -40,6 +46,12 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach((to, from, next) => {
-  document.title = `${setting.DOCUMENT_TITLE} - ${to.meta.title}`
+  document.title = `${to.meta.title} - ${setting.DOCUMENT_TITLE}`
+  tagsViewStore.addTagsView({
+    title: to.meta.title,
+    name: to.path,
+    path: to.path,
+  })
+  tagsViewStore.changeEditTabs(to.path)
   NProgress.done()
 })

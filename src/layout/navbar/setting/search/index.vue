@@ -5,8 +5,8 @@
       v-model="centerDialogVisible"
       destroy-on-close
       :show-close="false"
-      append-to-body
       width="30%"
+      append-to-body
     >
       <el-autocomplete
         v-model="state"
@@ -18,7 +18,9 @@
         style="width: 100%"
       >
         <template #prefix>
-          <el-icon><Search /></el-icon>
+          <el-icon>
+            <Search />
+          </el-icon>
         </template>
       </el-autocomplete>
     </el-dialog>
@@ -26,59 +28,52 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import useUserStore from '@/store/module/user'
+import { getAllLeaveMenuRoutes } from '@/utils/common'
+import { useRouter } from 'vue-router'
 
 let userStore = useUserStore()
 
-interface RestaurantItem {
+interface MenuItem {
   value: string
   link: string
 }
 
 let centerDialogVisible = ref(false)
 const state = ref('')
+const menus = ref<MenuItem[]>([])
+let $router = useRouter()
 
-const restaurants = ref<RestaurantItem[]>([])
+const globalSearch = () => {
+  centerDialogVisible.value = true
+  const menuList = userStore.menuList
+  let filterMenus = getAllLeaveMenuRoutes(userStore.menuList)
+
+  menus.value = filterMenus.map((item) => {
+    return {
+      value: item.meta.title as string,
+      link: item.path,
+    }
+  })
+}
+
 const querySearch = (queryString: string, cb: any) => {
   const results = queryString
-    ? restaurants.value.filter(createFilter(queryString))
-    : restaurants.value
+    ? menus.value.filter(createFilter(queryString))
+    : menus.value
   // call callback function to return suggestions
   cb(results)
 }
 const createFilter = (queryString: string) => {
-  return (restaurant: RestaurantItem) => {
-    return (
-      restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
-    )
+  return (menu: MenuItem) => {
+    return menu.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
   }
 }
-const loadAll = () => {
-  return [
-    { value: 'vue', link: 'https://github.com/vuejs/vue' },
-    { value: 'element', link: 'https://github.com/ElemeFE/element' },
-    { value: 'cooking', link: 'https://github.com/ElemeFE/cooking' },
-    { value: 'mint-ui', link: 'https://github.com/ElemeFE/mint-ui' },
-    { value: 'vuex', link: 'https://github.com/vuejs/vuex' },
-    { value: 'vue-router', link: 'https://github.com/vuejs/vue-router' },
-    { value: 'babel', link: 'https://github.com/babel/babel' },
-  ]
-}
 
-const handleSelect = (item: RestaurantItem) => {
-  console.log(item, item.link, item.value)
-}
-
-onMounted(() => {
-  // const menuList = userStore.menuList
-  // const menus = menuList.filter((item) => !item.meta.isHidden)
-  // console.log(menus)
-  restaurants.value = loadAll()
-})
-
-const globalSearch = () => {
-  centerDialogVisible.value = true
+const handleSelect = (item: MenuItem) => {
+  $router.push({ path: item.link })
+  centerDialogVisible.value = false
 }
 </script>
 

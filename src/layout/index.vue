@@ -1,6 +1,6 @@
 <template>
   <div class="layout-container">
-    <div class="layout-sidebar">
+    <div class="layout-sidebar" :class="{ fold: isFold }">
       <Sidebar></Sidebar>
     </div>
     <div class="layout-navbar" :class="{ fold: isFold }">
@@ -16,6 +16,8 @@
 import Sidebar from '@/layout/sidebar/index.vue'
 import Navbar from '@/layout/navbar/index.vue'
 import Main from '@/layout/main/index.vue'
+import TagsView from '@/layout/navbar/tagsview/index.vue'
+
 import { onMounted, ref } from 'vue'
 import $mitt from '@/utils/mitt'
 
@@ -65,7 +67,7 @@ onMounted(() => {
     height: calc(100vh - $layout-navbar-height);
     left: $layout-sidebar-width;
     top: $layout-navbar-height;
-    padding: 20px;
+    padding: 6px;
     overflow: auto;
     transition: all 0.3s;
     //background-color: #ffffff;

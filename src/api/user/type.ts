@@ -1,17 +1,17 @@
 import { ResponseData } from '../type'
 
 // 登录接口请求参数类型
-export interface loginRequest {
+export interface LoginRequest {
   username: string
   password: string
 }
 
 // 登录接口响应参数类型
-export interface loginResponse extends ResponseData {
+export interface LoginResponse extends ResponseData {
   data: string
 }
 
-interface userInfo {
+interface UserInfo {
   userId: number
   avatar: string
   username: string
@@ -24,6 +24,6 @@ interface userInfo {
 }
 
 // 获取用户信息接口响应参数类型
-export interface userInfoResponse extends ResponseData {
-  data: userInfo
+export interface UserInfoResponse extends ResponseData {
+  data: UserInfo
 }

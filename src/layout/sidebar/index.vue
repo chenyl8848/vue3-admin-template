@@ -1,21 +1,19 @@
 <template>
-  <div>
-    <!--  logo组件  -->
-    <Logo></Logo>
-    <!--  菜单组件  -->
-    <!--  滚动组件  -->
-    <el-scrollbar class="scroll">
-      <el-menu
-        background-color="#001529"
-        text-color="white"
-        active-text-color="yellowgreen"
-        :collapse="isFold"
-        :default-active="$route.path"
-      >
-        <Menu :menuList="menuList"></Menu>
-      </el-menu>
-    </el-scrollbar>
-  </div>
+  <!--  菜单组件  -->
+  <!--  logo组件  -->
+  <Logo></Logo>
+  <!--  滚动组件  -->
+  <el-scrollbar class="scroll">
+    <el-menu
+      background-color="#001529"
+      text-color="white"
+      active-text-color="yellowgreen"
+      :collapse="isFold"
+      :default-active="$route.path"
+    >
+      <Menu :menuList="menuList"></Menu>
+    </el-menu>
+  </el-scrollbar>
 </template>
 
 <script lang="ts" setup>
