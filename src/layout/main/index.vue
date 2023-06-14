@@ -28,7 +28,6 @@ import $mitt from '@/utils/mitt'
 import useTagsViewStore from '@/store/module/tagsView'
 import type { TabPaneName, TabsPaneContext } from 'element-plus'
 import { useRouter } from 'vue-router'
-import tagsView from '@/store/module/tagsView'
 
 let isRefresh = ref(true)
 let flag = ref(true)
@@ -39,7 +38,6 @@ let tagsViewStore = useTagsViewStore()
 onMounted(() => {
   $mitt.on('refresh', (param: boolean) => {
     isRefresh.value = param
-    console.log(param, isRefresh.value)
   })
 })
 
@@ -49,7 +47,6 @@ watch(
     // 点击刷新按钮:路由组件销毁
     flag.value = false
     nextTick(() => {
-      console.log('hhhhhh')
       flag.value = true
     })
   },

@@ -18,7 +18,12 @@ const useUserStore = defineStore('User', {
   actions: {
     // 用户登录
     async userLogin(data: LoginRequest) {
-      const result: LoginResponse = await login(data)
+      // const result: LoginResponse = await login(data)
+      const result: LoginResponse = {
+        code: 200,
+        message: '登录成功',
+        data: 'Admin Token',
+      }
       if (result.code === 200) {
         this.token = result.data
         SET_TOKEN(result.data)
@@ -31,7 +36,23 @@ const useUserStore = defineStore('User', {
 
     // 获取用户信息
     async getUserInfo() {
-      const result: UserInfoResponse = await getUserInfo()
+      // const result: UserInfoResponse = await getUserInfo()
+      const result: UserInfoResponse = {
+        code: 200,
+        message: '获取用户信息成功',
+        data: {
+          userId: 1,
+          avatar:
+            'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+          username: 'admin',
+          password: '111111',
+          desc: '平台管理员',
+          roles: ['平台管理员'],
+          buttons: ['cuser.detail'],
+          routes: ['home'],
+          token: 'Admin Token',
+        },
+      }
       if (result.code === 200) {
         this.username = result.data.username
         this.avatar = result.data.avatar

@@ -1,86 +1,126 @@
 <template>
   <div>
-    <el-button icon="Search" circle @click="globalSearch" />
-    <el-dialog
-      v-model="centerDialogVisible"
-      destroy-on-close
-      :show-close="false"
-      width="30%"
-    >
-      <el-autocomplete
-        v-model="state"
-        :fetch-suggestions="querySearch"
-        clearable
-        class="inline-input w-50"
-        placeholder="菜单搜索"
-        @select="handleSelect"
-        style="width: 100%"
-      >
-        <template #prefix>
-          <el-icon>
-            <Search />
-          </el-icon>
-        </template>
-      </el-autocomplete>
-    </el-dialog>
+    <el-card class="box-card">
+      <el-row :gutter="20">
+        <el-col :span="21">
+          <el-form :model="queryForm" label-width="120px">
+            <el-form-item label="用户名称：">
+              <el-input v-model="queryForm.username" />
+            </el-form-item>
+          </el-form>
+        </el-col>
+        <el-col :span="3">
+          <el-button type="primary">搜索</el-button>
+          <el-button>重置</el-button>
+        </el-col>
+      </el-row>
+    </el-card>
+    <el-card class="box-card">
+      <el-row :gutter="20">
+        <el-col :span="1">
+          <el-button>新增</el-button>
+        </el-col>
+        <el-col :span="1">
+          <el-button type="primary">编辑</el-button>
+        </el-col>
+        <el-col :span="1">
+          <el-button type="danger">删除</el-button>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-table
+          :data="tableData"
+          style="width: 100%"
+          border
+          stripe
+          highlight-current-row
+          ref="multipleTableRef"
+        >
+          <el-table-column type="selection" width="55" />
+          <el-table-column prop="date" label="Date" width="180" />
+          <el-table-column prop="name" label="Name" width="180" />
+          <el-table-column prop="address" label="Address" />
+        </el-table>
+      </el-row>
+      <el-row>
+        <el-pagination background layout="prev, pager, next" :total="1000" />
+      </el-row>
+    </el-card>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
-import useUserStore from '@/store/module/user'
+import { reactive, ref } from 'vue'
+import { ElTable } from 'element-plus'
 
-let userStore = useUserStore()
-
-interface RestaurantItem {
-  value: string
-  link: string
-}
-
-let centerDialogVisible = ref(false)
-const state = ref('')
-
-const restaurants = ref<RestaurantItem[]>([])
-const querySearch = (queryString: string, cb: any) => {
-  const results = queryString
-    ? restaurants.value.filter(createFilter(queryString))
-    : restaurants.value
-  // call callback function to return suggestions
-  cb(results)
-}
-const createFilter = (queryString: string) => {
-  return (restaurant: RestaurantItem) => {
-    return (
-      restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
-    )
-  }
-}
-const loadAll = () => {
-  return [
-    { value: 'vue', link: 'https://github.com/vuejs/vue' },
-    { value: 'element', link: 'https://github.com/ElemeFE/element' },
-    { value: 'cooking', link: 'https://github.com/ElemeFE/cooking' },
-    { value: 'mint-ui', link: 'https://github.com/ElemeFE/mint-ui' },
-    { value: 'vuex', link: 'https://github.com/vuejs/vuex' },
-    { value: 'vue-router', link: 'https://github.com/vuejs/vue-router' },
-    { value: 'babel', link: 'https://github.com/babel/babel' },
-  ]
-}
-
-const handleSelect = (item: RestaurantItem) => {
-  console.log(item, item.link, item.value)
-}
-
-onMounted(() => {
-  // const menuList = userStore.menuList
-  // const menus = menuList.filter((item) => !item.meta.isHidden)
-  // console.log(menus)
-  restaurants.value = loadAll()
+const queryForm = reactive({
+  username: '',
 })
 
-const globalSearch = () => {
-  centerDialogVisible.value = true
+interface User {
+  date: string
+  name: string
+  address: string
 }
+
+const multipleTableRef = ref<InstanceType<typeof ElTable>>()
+const multipleSelection = ref<User[]>([])
+
+const tableData = [
+  {
+    date: '2016-05-03',
+    name: 'Tom',
+    address: 'No. 189, Grove St, Los Angeles',
+  },
+  {
+    date: '2016-05-02',
+    name: 'Tom',
+    address: 'No. 189, Grove St, Los Angeles',
+  },
+  {
+    date: '2016-05-04',
+    name: 'Tom',
+    address: 'No. 189, Grove St, Los Angeles',
+  },
+  {
+    date: '2016-05-01',
+    name: 'Tom',
+    address: 'No. 189, Grove St, Los Angeles',
+  },
+  {
+    date: '2016-05-03',
+    name: 'Tom',
+    address: 'No. 189, Grove St, Los Angeles',
+  },
+  {
+    date: '2016-05-02',
+    name: 'Tom',
+    address: 'No. 189, Grove St, Los Angeles',
+  },
+  {
+    date: '2016-05-04',
+    name: 'Tom',
+    address: 'No. 189, Grove St, Los Angeles',
+  },
+  {
+    date: '2016-05-01',
+    name: 'Tom',
+    address: 'No. 189, Grove St, Los Angeles',
+  },
+  {
+    date: '2016-05-03',
+    name: 'Tom',
+    address: 'No. 189, Grove St, Los Angeles',
+  },
+]
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.box-card {
+  margin-bottom: 12px;
+}
+
+.el-row {
+  margin-bottom: 12px;
+}
+</style>

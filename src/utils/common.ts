@@ -15,7 +15,7 @@ export const getAllMenuRoutes = (
   return menus
 }
 
-export const getAllLeaveMenuRoutes = (menuList: []): Array<RouteRecordRaw> => {
+export const getAllLeafMenuRoutes = (menuList: []): Array<RouteRecordRaw> => {
   let emptyMenuRoutes: [] = []
   let allMenuRoutes = getAllMenuRoutes(menuList, emptyMenuRoutes)
   return allMenuRoutes.filter(

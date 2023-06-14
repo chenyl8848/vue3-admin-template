@@ -67,7 +67,7 @@ onMounted(() => {
     height: calc(100vh - $layout-navbar-height);
     left: $layout-sidebar-width;
     top: $layout-navbar-height;
-    padding: 6px;
+    padding: 12px;
     overflow: auto;
     transition: all 0.3s;
     //background-color: #ffffff;

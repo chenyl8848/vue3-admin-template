@@ -30,7 +30,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import useUserStore from '@/store/module/user'
-import { getAllLeaveMenuRoutes } from '@/utils/common'
+import { getAllLeafMenuRoutes } from '@/utils/common'
 import { useRouter } from 'vue-router'
 
 let userStore = useUserStore()
@@ -48,7 +48,7 @@ let $router = useRouter()
 const globalSearch = () => {
   centerDialogVisible.value = true
   const menuList = userStore.menuList
-  let filterMenus = getAllLeaveMenuRoutes(userStore.menuList)
+  let filterMenus = getAllLeafMenuRoutes(userStore.menuList)
 
   menus.value = filterMenus.map((item) => {
     return {
