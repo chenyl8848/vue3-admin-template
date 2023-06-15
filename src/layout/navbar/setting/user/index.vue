@@ -10,6 +10,7 @@
       </span>
       <template #dropdown>
         <el-dropdown-menu>
+          <el-dropdown-item @click="gotoGithub">Github</el-dropdown-item>
           <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </template>
@@ -20,11 +21,16 @@
 <script lang="ts" setup>
 import useUserStore from '@/store/module/user'
 import { useRoute, useRouter } from 'vue-router'
+import setting from '@/setting'
 
 let $router = useRouter()
 let $route = useRoute()
 
 let userStore = useUserStore()
+
+const gotoGithub = () => {
+  window.open(setting.GITHUB_ADDRESS)
+}
 
 // 退出登录
 const logout = async () => {

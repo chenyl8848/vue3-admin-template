@@ -7,7 +7,13 @@
       :show-close="false"
       width="30%"
       append-to-body
+      center
     >
+      <template #header="{ close, titleId, titleClass }">
+        <div class="my-header">
+          <h4 :id="titleId" :class="titleClass">搜索</h4>
+        </div>
+      </template>
       <el-autocomplete
         v-model="state"
         :fetch-suggestions="querySearch"
@@ -23,6 +29,9 @@
           </el-icon>
         </template>
       </el-autocomplete>
+      <template #footer>
+        <span class="dialog-footer"></span>
+      </template>
     </el-dialog>
   </div>
 </template>

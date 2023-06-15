@@ -36,7 +36,7 @@ onMounted(() => {
   //background-color: skyblue;
 
   .layout-sidebar {
-    color: white;
+    //color: white;
     width: $layout-sidebar-width;
     height: 100vh;
     background-color: $layout-sidebar-background-color;

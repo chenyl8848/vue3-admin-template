@@ -1,6 +1,15 @@
 // 常用固定路由
 import { RouteRecordRaw } from 'vue-router'
 
+// 扩展 RouteMeta 接口
+declare module 'vue-router' {
+  interface RouteMeta {
+    title?: string
+    isHidden?: boolean
+    icon?: string
+  }
+}
+
 export const constantRoute: Array<RouteRecordRaw> = [
   {
     path: '/login',
@@ -73,6 +82,39 @@ export const constantRoute: Array<RouteRecordRaw> = [
           title: '菜单管理',
           isHidden: false,
           icon: 'Grid',
+        },
+      },
+    ],
+  },
+  {
+    path: '/system',
+    component: () => import('@/layout/index.vue'),
+    name: 'system',
+    meta: {
+      title: '系统管理',
+      isHidden: true,
+      icon: 'Tools',
+    },
+    redirect: '/system/dict',
+    children: [
+      {
+        path: '/system/dict',
+        component: () => import('@/views/system/dict/index.vue'),
+        name: 'dict',
+        meta: {
+          title: '字典管理',
+          isHidden: false,
+          icon: 'Collection',
+        },
+      },
+      {
+        path: '/system/log',
+        component: () => import('@/views/system/log/index.vue'),
+        name: 'log',
+        meta: {
+          title: '操作日志',
+          isHidden: false,
+          icon: 'Operation',
         },
       },
     ],
