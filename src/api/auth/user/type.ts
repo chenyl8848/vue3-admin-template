@@ -1,4 +1,4 @@
-import { PageRequestData, PageResponseData, ResponseData } from '../type'
+import { PageRequestData, PageResponseData, ResponseData } from '../../type'
 import ex = CSS.ex
 
 // 登录接口请求参数类型

@@ -1,7 +1,11 @@
 // 引入 pinia
 import { defineStore } from 'pinia'
-import { LoginRequest, LoginResponse, UserInfoResponse } from '@/api/user/type'
-import { getUserInfo, login } from '@/api/user/index'
+import {
+  LoginRequest,
+  LoginResponse,
+  UserInfoResponse,
+} from '@/api/auth/user/type'
+import { getUserInfo, login } from '@/api/auth/user/index'
 import { GET_TOKEN, REMOVE_TOKEN, SET_TOKEN } from '@/utils/token'
 import { constantRoute } from '@/router/routes'
 import { UserState } from '@/store/module/types/type'

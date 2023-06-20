@@ -5,14 +5,22 @@
         <el-col :span="6">
           <el-form :model="queryForm" label-width="120px">
             <el-form-item label="用户名：" prop="username">
-              <el-input v-model="queryForm.username" clearable />
+              <el-input
+                v-model="queryForm.username"
+                clearable
+                @keyup.enter="search"
+              />
             </el-form-item>
           </el-form>
         </el-col>
         <el-col :span="6">
           <el-form :model="queryForm" label-width="120px">
             <el-form-item label="用户昵称：">
-              <el-input v-model="queryForm.name" clearable />
+              <el-input
+                v-model="queryForm.name"
+                clearable
+                @keyup.enter="search"
+              />
             </el-form-item>
           </el-form>
         </el-col>
@@ -51,8 +59,8 @@
           <el-table-column prop="username" label="用户名" width="180" />
           <el-table-column prop="name" label="用户昵称" width="180" />
           <el-table-column prop="phone" label="手机号" />
-          <el-table-column prop="createTime" label="创建时间" />
-          <el-table-column prop="updateTime" label="更新时间" />
+          <el-table-column prop="createTime" label="创建时间" sortable />
+          <el-table-column prop="updateTime" label="更新时间" sortable />
         </el-table>
       </el-row>
       <el-row>
@@ -111,7 +119,7 @@
         <span class="dialog-footer">
           <el-button @click="dialogVisible = false">取消</el-button>
           <el-button type="primary" @click="dialogConfirm" :loading="loading">
-            确认
+            确定
           </el-button>
         </span>
       </template>
@@ -134,7 +142,7 @@ import {
   getUserById,
   getUserList,
   updateUser,
-} from '@/api/user'
+} from '@/api/auth/user'
 import {
   AddOrUpdateUserRequest,
   DeleteUserRequest,
@@ -142,7 +150,7 @@ import {
   GetUserListRequest,
   GetUserListResponse,
   SysUserResponse,
-} from '@/api/user/type'
+} from '@/api/auth/user/type'
 import { ResponseData } from '@/api/type'
 
 const queryForm = reactive({
@@ -204,6 +212,7 @@ const loading = ref<boolean>(false)
 const addOrUpdateUser = async (type: string) => {
   if (type === '1') {
     // 新增
+    resetForm()
     dialogTitle.value = '新增用户'
   } else if (type === '2') {
     // 修改
