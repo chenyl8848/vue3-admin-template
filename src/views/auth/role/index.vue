@@ -44,7 +44,7 @@
           <el-table-column prop="remark" label="备注" />
           <el-table-column prop="createTime" label="创建日期" sortable />
           <el-table-column prop="updateTime" label="更新日期" sortable />
-          <el-table-column fixed="right" label="操作" width="120">
+          <el-table-column fixed="right" label="操作" width="240">
             <template #="{ row, $index }">
               <el-button
                 link
@@ -61,6 +61,14 @@
                 @click="btnDeleteRole(row)"
               >
                 删除
+              </el-button>
+              <el-button
+                  link
+                  size="small"
+                  type="primary"
+                  @click="btnAssignMenu(row)"
+              >
+                分配菜单权限
               </el-button>
             </template>
           </el-table-column>
@@ -117,17 +125,50 @@
           </span>
         </template>
       </el-dialog>
+
+      <el-drawer
+          v-model="drawer"
+          title="分配菜单权限"
+          direction="rtl"
+      >
+        <el-input
+            v-model="filterText"
+            placeholder="请输入菜单名称"
+            style="margin-bottom: 12px"
+            clearable
+        />
+          <el-tree
+              :data="menuTreeData"
+              :props="defaultProps"
+              ref="treeRef"
+              class="filter-tree"
+              :filter-node-method="filterNode"
+              :expand-on-click-node="false"
+              :default-checked-keys="defaultCheckedKeys"
+              @check-change="checkNodeChange"
+              node-key="id"
+              show-checkbox
+              default-expand-all
+              check-strictly
+          />
+        <template #footer>
+          <el-button @click="drawer = false">取消</el-button>
+          <el-button type="primary" @click="drawerConfirm" :loading="loading">确定</el-button>
+        </template>
+      </el-drawer>
     </el-card>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref } from 'vue'
+import {onMounted, reactive, ref, watch} from 'vue'
 import {
   addRole,
+  assignMenu,
   deleteRole,
+  getAssignedMenu,
   getRoleById,
-  getRoleList,
+  getRolePageList,
   updateRole,
 } from '@/api/auth/role'
 import {
@@ -137,8 +178,10 @@ import {
   SysRoleQueryRequest,
   SysRoleResponse,
 } from '@/api/auth/role/type'
-import { ElMessage, ElMessageBox, FormInstance, FormRules } from 'element-plus'
-import { deleteUser } from '@/api/auth/user'
+import {ElMessage, ElMessageBox, ElTree, FormInstance, FormRules} from 'element-plus'
+import {GetMenuTreeResponse, SysMenuResponse} from "@/api/auth/menu/type";
+import {getMenuTree} from "@/api/auth/menu";
+import {ResponseData} from "@/api/type";
 
 const queryForm = reactive<SysRoleQueryRequest>({
   roleName: '',
@@ -160,7 +203,7 @@ const search = async () => {
     pageSize: pageSize.value,
     queryParams: queryForm,
   }
-  const result: GetRoleListResponse = await getRoleList(requestData)
+  const result: GetRoleListResponse = await getRolePageList(requestData)
   if (result.code === 200) {
     tableData.value = result.data.records
     tableTotal.value = result.data.total
@@ -282,6 +325,68 @@ const resetForm = () => {
   form.roleCode = ''
   form.remark = ''
 }
+
+const drawer = ref<boolean>(false)
+let roleId = -1
+const filterText = ref('')
+const treeRef = ref<InstanceType<typeof ElTree>>()
+const menuTreeData = ref<Array<SysMenuResponse>>([])
+const defaultProps = {
+  children: 'children',
+  label: 'menuName',
+  value: 'id',
+}
+const defaultCheckedKeys = ref<Array<number>>([])
+let checkedNodeKeyData = defaultCheckedKeys.value
+
+watch(filterText, (val) => {
+  treeRef.value!.filter(val)
+})
+
+const filterNode = (value: string, data: SysMenuResponse) => {
+  if (!value) return true
+  return data.menuName.includes(value)
+}
+
+const btnAssignMenu = async (row: SysRoleResponse) => {
+  drawer.value = true
+  roleId = row.id
+  const result: GetMenuTreeResponse = await getMenuTree()
+  if (result.code === 200) {
+    menuTreeData.value = result.data
+    const resultData:GetMenuTreeResponse = await getAssignedMenu(row.id);
+    if (resultData.code === 200) {
+      defaultCheckedKeys.value = resultData.data.map(item => item.id) as Array<number>
+    } else {
+      ElMessage.error(resultData.message)
+    }
+  } else {
+    ElMessage.error(result.message)
+  }
+}
+
+const checkNodeChange = (checkedNode, isChecked, isChildrenNodeChecked) => {
+  if (isChecked) {
+    checkedNodeKeyData.push(checkedNode.id)
+  } else {
+    checkedNodeKeyData = checkedNodeKeyData.filter(
+        (item) => item !== checkedNode.id,
+    )
+  }
+}
+
+const drawerConfirm = async () => {
+  loading.value = true
+  const result:ResponseData = await assignMenu(roleId, checkedNodeKeyData);
+  if (result.code === 200) {
+    ElMessage.success("分配菜单成功")
+    drawer.value = false
+  } else {
+    ElMessage.error(result.message)
+  }
+  loading.value = false
+}
+
 </script>
 
 <style lang="scss" scoped>

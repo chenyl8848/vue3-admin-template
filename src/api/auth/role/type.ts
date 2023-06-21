@@ -28,6 +28,10 @@ export interface GetRoleListResponse extends ResponseData {
   data: SysRolePageData
 }
 
+export interface SysRoleData extends ResponseData {
+  data: Array<SysRoleResponse>
+}
+
 export interface AddOrUpdateRoleRequest {
   id?: number
   roleCode: string

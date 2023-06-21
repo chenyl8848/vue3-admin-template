@@ -12,6 +12,7 @@
           v-model="filterText"
           placeholder="请输入菜单名称"
           style="margin-bottom: 12px"
+          clearable
         />
         <el-scrollbar height="600px">
           <el-tree

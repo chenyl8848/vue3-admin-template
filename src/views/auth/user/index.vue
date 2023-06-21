@@ -63,6 +63,30 @@
           <el-table-column prop="phone" label="手机号" />
           <el-table-column prop="createTime" label="创建时间" sortable />
           <el-table-column prop="updateTime" label="更新时间" sortable />
+          <el-table-column fixed="right" label="操作" width="120">
+            <template #="{ row, $index }">
+              <el-popover placement="left" :width="240" trigger="click">
+                <template #reference>
+                  <el-button
+                      link
+                      size="small"
+                      type="primary"
+                      @click="btnAssignRole(row)"
+                  >
+                    分配角色
+                  </el-button>
+                </template>
+                <el-select v-model="roleIds" placeholder="请选择角色" filterable clearable multiple style="width: 100%;" placement="bottom" @change="changeSelectRole">
+                  <el-option
+                      v-for="item in options"
+                      :key="item.roleCode"
+                      :label="item.roleName"
+                      :value="item.id"
+                  />
+                </el-select>
+              </el-popover>
+            </template>
+          </el-table-column>
         </el-table>
       </el-row>
       <el-row>
@@ -139,11 +163,11 @@ import {
   FormRules,
 } from 'element-plus'
 import {
-  addUser,
+  addUser, assignedUserRole,
   batchDeleteUser,
-  deleteUser,
+  deleteUser, getAssignedUserRole,
   getUserById,
-  getUserList,
+  getUserPageList,
   updateUser,
 } from '@/api/auth/user'
 import {
@@ -155,6 +179,8 @@ import {
   SysUserResponse,
 } from '@/api/auth/user/type'
 import { ResponseData } from '@/api/type'
+import {SysRoleData, SysRoleQueryRequest, SysRoleResponse} from "@/api/auth/role/type";
+import {getRoleList} from "@/api/auth/role";
 
 const queryForm = reactive({
   username: '',
@@ -174,7 +200,7 @@ const search = async () => {
     pageSize: pageSize.value,
     queryParams: queryForm,
   }
-  const result: GetUserListResponse = await getUserList(requestData)
+  const result: GetUserListResponse = await getUserPageList(requestData)
   if (result.code == 200) {
     tableData.value = result.data.records
     tableTotal.value = result.data.total
@@ -316,6 +342,36 @@ const btnBatchDeleteUser = async () => {
         message: '取消成功',
       })
     })
+}
+
+const roleIds = ref<Array<number>>([])
+let userId = -1
+const options = ref<Array<SysRoleResponse>>([])
+
+const btnAssignRole = async (row: SysUserResponse) => {
+  userId = row.id
+  const result:SysRoleData = await getAssignedUserRole(row.id);
+  if (result.code === 200) {
+    roleIds.value = result.data.map(item => item.id)
+  }
+
+  let requestData:SysRoleQueryRequest = {
+    roleCode: '',
+    roleName: ''
+  }
+  const sysRoleData:SysRoleData = await getRoleList(requestData);
+  if (sysRoleData.code === 200) {
+    options.value = sysRoleData.data
+  }
+}
+
+const changeSelectRole = async (val:any) => {
+  const result = await assignedUserRole(userId, roleIds.value);
+  if (result.code === 200) {
+    ElMessage.success("分配角色成功")
+  } else {
+    ElMessage.error(result.message)
+  }
 }
 </script>
 
