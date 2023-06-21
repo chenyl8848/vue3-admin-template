@@ -3,82 +3,121 @@
     <div class="menu-left">
       <el-card class="box-card">
         <template #header>
-          <el-button type="primary">Primary</el-button>
-          <el-button type="danger">Danger</el-button>
+          <el-button type="primary" @click="btnAddMenu">新增</el-button>
+          <el-button type="danger" @click="btnBatchDeleteMenu">
+            批量删除
+          </el-button>
         </template>
         <el-input
           v-model="filterText"
-          placeholder="Filter keyword"
+          placeholder="请输入菜单名称"
           style="margin-bottom: 12px"
         />
-        <el-tree
-          :data="data"
-          :props="defaultProps"
-          @node-click="handleNodeClick"
-          ref="treeRef"
-          class="filter-tree"
-          :filter-node-method="filterNode"
-        />
+        <el-scrollbar height="600px">
+          <el-tree
+            :data="data"
+            :props="defaultProps"
+            @node-click="handleNodeClick"
+            @node-expand="handleNodeExpand"
+            ref="treeRef"
+            class="filter-tree"
+            :filter-node-method="filterNode"
+            :expand-on-click-node="false"
+            node-key="id"
+            :default-expanded-keys="expandNodeKeyData"
+            @check-change="checkNodeChange"
+            check-strictly
+            show-checkbox
+          />
+        </el-scrollbar>
       </el-card>
     </div>
     <div class="menu-right">
       <el-card class="box-card">
-        <el-form :model="form" label-width="120px">
-          <el-form-item label="Activity name">
-            <el-input v-model="form.name" />
+        <el-form
+          :model="form"
+          label-width="120px"
+          ref="ruleFormRef"
+          :rules="rules"
+        >
+          <el-form-item label="菜单名称：" prop="menuName">
+            <el-input
+              v-model="form.menuName"
+              clearable
+              placeholder="请输入菜单名称"
+            />
           </el-form-item>
-          <el-form-item label="Activity zone">
-            <el-select
-              v-model="form.region"
-              placeholder="please select your zone"
-            >
-              <el-option label="Zone one" value="shanghai" />
-              <el-option label="Zone two" value="beijing" />
-            </el-select>
+          <el-form-item label="菜单编码：" prop="menuCode">
+            <el-input
+              v-model="form.menuCode"
+              clearable
+              placeholder="请输入菜单编码"
+            />
           </el-form-item>
-          <el-form-item label="Activity time">
-            <el-col :span="11">
-              <el-date-picker
-                v-model="form.date1"
-                type="date"
-                placeholder="Pick a date"
-                style="width: 100%"
-              />
-            </el-col>
-            <el-col :span="2" class="text-center">
-              <span class="text-gray-500">-</span>
-            </el-col>
-            <el-col :span="11">
-              <el-time-picker
-                v-model="form.date2"
-                placeholder="Pick a time"
-                style="width: 100%"
-              />
-            </el-col>
+          <el-form-item label="父级菜单：" prop="pid">
+            <el-tree-select
+              v-model="form.pid"
+              :data="data"
+              :render-after-expand="false"
+              :props="defaultProps"
+              check-strictly
+              style="width: 100%"
+              clearable
+            />
           </el-form-item>
-          <el-form-item label="Instant delivery">
-            <el-switch v-model="form.delivery" />
-          </el-form-item>
-          <el-form-item label="Activity type">
-            <el-checkbox-group v-model="form.type">
-              <el-checkbox label="Online activities" name="type" />
-              <el-checkbox label="Promotion activities" name="type" />
-              <el-checkbox label="Offline activities" name="type" />
-              <el-checkbox label="Simple brand exposure" name="type" />
-            </el-checkbox-group>
-          </el-form-item>
-          <el-form-item label="Resources">
-            <el-radio-group v-model="form.resource">
-              <el-radio label="Sponsor" />
-              <el-radio label="Venue" />
+          <el-form-item label="菜单类型：">
+            <el-radio-group v-model="form.type">
+              <el-radio :label="1">菜单</el-radio>
+              <el-radio :label="2">按钮</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="Activity form">
-            <el-input v-model="form.desc" type="textarea" />
+          <el-form-item label="菜单路径：">
+            <el-input
+              v-model="form.path"
+              clearable
+              placeholder="请输入菜单路径"
+            />
+          </el-form-item>
+          <el-form-item label="菜单图标：">
+            <el-input
+              v-model="form.menuIcon"
+              clearable
+              placeholder="请输入菜单图标"
+            />
+          </el-form-item>
+          <el-form-item label="菜单顺序：">
+            <el-input-number
+              v-model="form.sort"
+              :min="0"
+              :max="10"
+              style="width: 100%"
+            />
+          </el-form-item>
+          <el-form-item label="菜单状态：">
+            <el-switch
+              v-model="form.status"
+              :active-value="1"
+              :inactive-value="0"
+            />
+          </el-form-item>
+          <el-form-item label="显示状态：">
+            <el-switch
+              v-model="form.isHidden"
+              :active-value="1"
+              :inactive-value="0"
+            />
+          </el-form-item>
+          <el-form-item label="是否外链：">
+            <el-switch
+              v-model="form.isExternal"
+              :active-value="1"
+              :inactive-value="0"
+            />
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="onSubmit">Create</el-button>
-            <el-button>Cancel</el-button>
+            <el-button type="primary" @click="onSubmit" :loading="loading">
+              保存
+            </el-button>
           </el-form-item>
         </el-form>
       </el-card>
@@ -87,106 +126,185 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, watch } from 'vue'
-import { ElTree } from 'element-plus'
+import { onMounted, reactive, ref, watch } from 'vue'
+import {
+  ElMessage,
+  ElMessageBox,
+  ElTree,
+  FormInstance,
+  FormRules,
+} from 'element-plus'
+import {
+  AddOrUpdateMenuRequest,
+  GetMenuTreeResponse,
+  SysMenuResponse,
+} from '@/api/auth/menu/type'
+import {
+  addMenu,
+  batchDeleteMenu,
+  getMenuTree,
+  updateMenu,
+} from '@/api/auth/menu'
 
 const filterText = ref('')
 const treeRef = ref<InstanceType<typeof ElTree>>()
+const data = ref<Array<SysMenuResponse>>([])
+const expandNodeKeyData = ref<Array<number>>([])
+let checkedNodeKeyData = []
 
-interface Tree {
-  label: string
-  children?: Tree[]
+const defaultProps = {
+  children: 'children',
+  label: 'menuName',
+  value: 'id',
 }
 
 watch(filterText, (val) => {
   treeRef.value!.filter(val)
 })
 
-const filterNode = (value: string, data: Tree) => {
+const filterNode = (value: string, data: SysMenuResponse) => {
   if (!value) return true
-  return data.label.includes(value)
+  return data.menuName.includes(value)
 }
 
-const handleNodeClick = (data: Tree) => {
-  console.log(data)
+const handleNodeClick = (data: SysMenuResponse) => {
+  form.id = data.id
+  form.pid = data.pid
+  form.menuName = data.menuName
+  form.menuCode = data.menuCode
+  form.type = data.type
+  form.status = data.status
+  form.path = data.path
+  form.isHidden = data.isHidden
+  form.sort = data.sort
+  form.isExternal = data.isExternal
 }
 
-const data: Tree[] = [
-  {
-    label: 'Level one 1',
-    children: [
-      {
-        label: 'Level two 1-1',
-        children: [
-          {
-            label: 'Level three 1-1-1',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    label: 'Level one 2',
-    children: [
-      {
-        label: 'Level two 2-1',
-        children: [
-          {
-            label: 'Level three 2-1-1',
-          },
-        ],
-      },
-      {
-        label: 'Level two 2-2',
-        children: [
-          {
-            label: 'Level three 2-2-1',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    label: 'Level one 3',
-    children: [
-      {
-        label: 'Level two 3-1',
-        children: [
-          {
-            label: 'Level three 3-1-1',
-          },
-        ],
-      },
-      {
-        label: 'Level two 3-2',
-        children: [
-          {
-            label: 'Level three 3-2-1',
-          },
-        ],
-      },
-    ],
-  },
-]
-
-const defaultProps = {
-  children: 'children',
-  label: 'label',
+const handleNodeExpand = (param1) => {
+  expandNodeKeyData.value.push(param1.id)
 }
 
-const form = reactive({
-  name: '',
-  region: '',
-  date1: '',
-  date2: '',
-  delivery: false,
-  type: [],
-  resource: '',
-  desc: '',
+const checkNodeChange = (checkedNode, isChecked, isChildrenNodeChecked) => {
+  if (isChecked) {
+    checkedNodeKeyData.push(checkedNode.id)
+  } else {
+    checkedNodeKeyData = checkedNodeKeyData.filter(
+      (item) => item !== checkedNode.id,
+    )
+  }
+}
+
+const btnAddMenu = () => {
+  resetForm()
+}
+
+const btnBatchDeleteMenu = () => {
+  if (checkedNodeKeyData.length === 0) {
+    ElMessage.warning('请选择要删除的数据')
+    return
+  }
+
+  ElMessageBox.confirm(`确认要删除吗?`, 'Warning', {
+    confirmButtonText: '确认',
+    cancelButtonText: '取消',
+    type: 'warning',
+  })
+    .then(async () => {
+      const result = await batchDeleteMenu(checkedNodeKeyData)
+      if (result.code === 200) {
+        ElMessage({
+          type: 'success',
+          message: '删除成功',
+        })
+        menuTree()
+      } else {
+        ElMessage({
+          type: 'error',
+          message: result.message,
+        })
+      }
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '取消成功',
+      })
+    })
+}
+
+const menuTree = async () => {
+  const result: GetMenuTreeResponse = await getMenuTree()
+  if (result.code === 200) {
+    data.value = result.data
+  } else {
+    ElMessage.error(result.message)
+  }
+}
+
+onMounted(() => {
+  menuTree()
 })
 
-const onSubmit = () => {
+const ruleFormRef = ref<FormInstance>()
+const form = reactive<AddOrUpdateMenuRequest>({
+  id: 0,
+  pid: 1,
+  menuName: '',
+  menuCode: '',
+  menuIcon: '',
+  path: '',
+  type: 1,
+  status: 1,
+  isHidden: 1,
+  sort: 0,
+  isExternal: 0,
+})
+const rules = reactive<FormRules>({
+  menuName: { required: true, message: '菜单名称不能为空', trigger: 'blur' },
+  menuCode: { required: true, message: '菜单编码不能为空', trigger: 'blur' },
+  pid: { required: true, message: '父级菜单不能为空', trigger: 'blur' },
+})
+const loading = ref<boolean>(false)
+
+const onSubmit = async () => {
   console.log('submit!')
+  await ruleFormRef.value.validate()
+  loading.value = false
+  const { id } = form
+  if (id === 0) {
+    // 新增
+    const result = await addMenu(form)
+    if (result.code === 200) {
+      ElMessage.success('新增成功')
+      menuTree()
+    } else {
+      ElMessage.error(result.message)
+    }
+  } else {
+    // 修改
+    const result = await updateMenu(form)
+    if (result.code === 200) {
+      ElMessage.success('修改成功')
+      menuTree()
+    } else {
+      ElMessage.error(result.message)
+    }
+  }
+  loading.value = false
+}
+
+const resetForm = () => {
+  form.id = 0
+  form.pid = 1
+  form.menuName = ''
+  form.menuCode = ''
+  form.menuIcon = ''
+  form.path = ''
+  form.type = 1
+  form.status = 1
+  form.isHidden = 1
+  form.sort = 0
+  form.isExternal = 0
 }
 </script>
 
@@ -204,13 +322,12 @@ const onSubmit = () => {
   .menu-right {
     margin-left: 2%;
     width: 80%;
-    height: 100%;
-    display: flex;
+    //display: flex;
   }
 
   .box-card {
     width: 100%;
-    height: 100%;
+    //height: 100%;
   }
 }
 </style>

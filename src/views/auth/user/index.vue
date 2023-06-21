@@ -42,7 +42,9 @@
           </el-button>
         </el-col>
         <el-col :span="1">
-          <el-button type="danger" @click="btnDeleteUser">删除</el-button>
+          <el-button type="danger" @click="btnBatchDeleteUser">
+            批量删除
+          </el-button>
         </el-col>
       </el-row>
       <el-row>
@@ -138,6 +140,7 @@ import {
 } from 'element-plus'
 import {
   addUser,
+  batchDeleteUser,
   deleteUser,
   getUserById,
   getUserList,
@@ -158,7 +161,7 @@ const queryForm = reactive({
   name: '',
 })
 const multipleTableRef = ref<InstanceType<typeof ElTable>>()
-const multipleSelection = ref<Array<SysUserResponse>>()
+const multipleSelection = ref<Array<SysUserResponse>>([])
 
 const tableData = ref<Array<SysUserResponse>>()
 const tableTotal = ref<number>(0)
@@ -279,8 +282,8 @@ const resetForm = () => {
   form.id = 0
 }
 
-const btnDeleteUser = async () => {
-  if (!multipleSelection.value) {
+const btnBatchDeleteUser = async () => {
+  if (!multipleSelection.value || multipleSelection.value.length === 0) {
     ElMessage.warning('请选择要删除的数据')
     return
   }
@@ -293,7 +296,7 @@ const btnDeleteUser = async () => {
       let ids: number[] = multipleSelection.value?.map(
         (item) => item.id,
       ) as number[]
-      const result = await deleteUser(ids)
+      const result = await batchDeleteUser(ids)
       if (result.code === 200) {
         ElMessage({
           type: 'success',

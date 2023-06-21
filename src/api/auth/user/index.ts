@@ -2,13 +2,11 @@
 import request from '@/utils/request'
 import {
   AddOrUpdateUserRequest,
-  DeleteUserRequest,
   GetUserByIdResponse,
   GetUserListRequest,
   GetUserListResponse,
   LoginRequest,
   LoginResponse,
-  SysUserResponse,
   UserInfoResponse,
 } from './type'
 import { ResponseData } from '@/api/type'
@@ -21,6 +19,7 @@ enum API {
   ADD_USER_URL = '/sysuser/add',
   UPDATE_USER_URL = '/sysuser/update',
   DELETE_USER_URL = '/sysuser/delete',
+  BATCH_DELETE_USER_URL = '/sysuser/batchDelete',
 }
 
 // 登录接口
@@ -51,5 +50,9 @@ export const updateUser = (requestData: AddOrUpdateUserRequest) =>
   request.post<any, ResponseData>(API.UPDATE_USER_URL, requestData)
 
 // 用户删除接口
-export const deleteUser = (requestData: Array<number>) =>
+export const deleteUser = (requestData: number) =>
   request.post<any, ResponseData>(API.DELETE_USER_URL, requestData)
+
+// 用户批量删除接口
+export const batchDeleteUser = (requestData: Array<number>) =>
+  request.post<any, ResponseData>(API.BATCH_DELETE_USER_URL, requestData)

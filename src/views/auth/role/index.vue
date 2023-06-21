@@ -148,7 +148,6 @@ const tableData = ref<Array<SysRoleResponse>>()
 const tableTotal = ref<number>(0)
 const pageNo = ref<number>(1)
 const pageSize = ref<number>(10)
-const clickRow = reactive<SysRoleResponse>({})
 
 const btnReset = () => {
   queryForm.roleCode = ''
