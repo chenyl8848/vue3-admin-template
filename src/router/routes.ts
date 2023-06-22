@@ -38,7 +38,8 @@ export const constantRoute: Array<RouteRecordRaw> = [
         meta: {
           title: '首页',
           isHidden: false,
-          icon: 'HomeFilled',
+          // icon: 'HomeFilled',
+          icon: 'home',
         },
       },
     ],
@@ -50,7 +51,8 @@ export const constantRoute: Array<RouteRecordRaw> = [
     meta: {
       title: '权限管理',
       isHidden: true,
-      icon: 'Lock',
+      // icon: 'Lock',
+      icon: 'lock',
     },
     redirect: '/auth/user',
     children: [
@@ -61,7 +63,8 @@ export const constantRoute: Array<RouteRecordRaw> = [
         meta: {
           title: '用户管理',
           isHidden: false,
-          icon: 'UserFilled',
+          // icon: 'UserFilled',
+          icon: 'user',
         },
       },
       {
@@ -71,7 +74,8 @@ export const constantRoute: Array<RouteRecordRaw> = [
         meta: {
           title: '角色管理',
           isHidden: false,
-          icon: 'Avatar',
+          // icon: 'Avatar',
+          icon: 'role',
         },
       },
       {
@@ -81,7 +85,8 @@ export const constantRoute: Array<RouteRecordRaw> = [
         meta: {
           title: '菜单管理',
           isHidden: false,
-          icon: 'Grid',
+          // icon: 'Grid',
+          icon: 'menu',
         },
       },
     ],
@@ -93,7 +98,8 @@ export const constantRoute: Array<RouteRecordRaw> = [
     meta: {
       title: '系统管理',
       isHidden: true,
-      icon: 'Tools',
+      // icon: 'Tools',
+      icon: 'system',
     },
     redirect: '/system/dict',
     children: [
@@ -104,7 +110,8 @@ export const constantRoute: Array<RouteRecordRaw> = [
         meta: {
           title: '字典管理',
           isHidden: false,
-          icon: 'Collection',
+          // icon: 'Collection',
+          icon: 'dict',
         },
       },
       {
@@ -114,7 +121,8 @@ export const constantRoute: Array<RouteRecordRaw> = [
         meta: {
           title: '操作日志',
           isHidden: false,
-          icon: 'Operation',
+          // icon: 'Operation',
+          icon: 'log',
         },
       },
     ],

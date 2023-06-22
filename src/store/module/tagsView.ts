@@ -27,6 +27,19 @@ let useTagsViewStore = defineStore('tagsView', () => {
     }
   }
 
+  const removeOtherTagsView = (name: string) => {
+    if (visitedViews.value.length > 1) {
+      visitedViews.value = visitedViews.value.filter(item => item.name === name)
+      // visitedViews.value.splice(1, visitedViews.value.length)
+    }
+  }
+
+  const removeAllTagsView = () => {
+    if (visitedViews.value.length > 1) {
+      visitedViews.value.splice(1, visitedViews.value.length)
+    }
+  }
+
   const changeEditTabs = (value: string) => {
     editableTabsValue.value = value
   }
@@ -36,6 +49,8 @@ let useTagsViewStore = defineStore('tagsView', () => {
     editableTabsValue,
     addTagsView,
     removeTagsView,
+    removeOtherTagsView,
+    removeAllTagsView,
     changeEditTabs,
   }
 })

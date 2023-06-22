@@ -16,7 +16,7 @@ import User from '@/layout/navbar/setting/user/index.vue'
 
 import $mitt from '@/utils/mitt'
 
-let isRefresh = false
+let isRefresh = true
 
 // 刷新
 const refresh = () => {

@@ -1,17 +1,32 @@
 <template>
+  <div v-show="contextMenuVisible">
+    <ul :style="{left:menuLeft +'px',top:menuTop+'px'}" class="contextmenu">
+
+      <li>
+        <el-button link icon="Refresh" @click="btnRefresh">刷新</el-button>
+      </li>
+      <li>
+        <el-button link icon="CircleClose" @click="btnCloseOther">关闭其他</el-button>
+      </li>
+      <li>
+        <el-button link icon="CircleCloseFilled" @click="btnCloseAll">关闭所有</el-button>
+      </li>
+    </ul>
+  </div>
   <el-tabs
-    v-model="tagsViewStore.editableTabsValue"
-    type="card"
-    class="demo-tabs"
-    closable
-    @tabClick="tabClick"
-    @tabRemove="tabRemove"
+      v-model="tagsViewStore.editableTabsValue"
+      type="card"
+      class="demo-tabs"
+      closable
+      @tabClick="tabClick"
+      @tabRemove="tabRemove"
+      @contextmenu.prevent.native="openContextMenu($event)"
   >
     <el-tab-pane
-      v-for="item in tagsViewStore.visitedViews"
-      :key="item.name"
-      :label="item.title"
-      :name="item.name"
+        v-for="item in tagsViewStore.visitedViews"
+        :key="item.name"
+        :label="item.title"
+        :name="item.name"
     >
       <router-view v-slot="{ Component }">
         <transition name="fade">
@@ -23,11 +38,11 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted, ref, watch } from 'vue'
+import {nextTick, onMounted, ref, watch} from 'vue'
 import $mitt from '@/utils/mitt'
 import useTagsViewStore from '@/store/module/tagsView'
-import type { TabPaneName, TabsPaneContext } from 'element-plus'
-import { useRouter } from 'vue-router'
+import type {TabPaneName, TabsPaneContext} from 'element-plus'
+import {useRouter} from 'vue-router'
 
 let isRefresh = ref(true)
 let flag = ref(true)
@@ -42,26 +57,81 @@ onMounted(() => {
 })
 
 watch(
-  () => isRefresh.value,
-  () => {
-    // 点击刷新按钮:路由组件销毁
-    flag.value = false
-    nextTick(() => {
-      flag.value = true
-    })
-  },
+    () => isRefresh.value,
+    () => {
+      // 点击刷新按钮:路由组件销毁
+      flag.value = false
+      nextTick(() => {
+        flag.value = true
+      })
+    },
 )
 
 const tabClick = (pane: TabsPaneContext, ev: Event) => {
-  $router.push({ path: tagsViewStore.visitedViews[pane.index].path })
+  $router.push({path: tagsViewStore.visitedViews[pane.index].path})
 }
 
 const tabRemove = (name: TabPaneName) => {
   tagsViewStore.removeTagsView(name)
   $router.push({
     path: tagsViewStore.visitedViews[tagsViewStore.visitedViews.length - 1]
-      .path,
+        .path,
   })
+}
+
+const contextMenuVisible = ref<boolean>(false)
+const menuLeft = ref<number>(0)
+const menuTop = ref<number>(0)
+let currentPickedTabs = ''
+const openContextMenu = (e) => {
+  //防止默认菜单弹出
+  e.preventDefault();
+
+  if (e.target.id) {
+    currentPickedTabs = e.target.id.split("-")[1];
+    contextMenuVisible.value = true;
+    // 返回鼠标坐标点，并传递给菜单的绝对定位值
+    menuLeft.value = e.clientX - 240;
+    menuTop.value = e.clientY - 30;
+  }
+
+}
+
+//隐藏菜单
+watch(() => contextMenuVisible.value, () => {
+  if (contextMenuVisible.value) {
+    document.body.addEventListener("click", () => {
+      contextMenuVisible.value = false
+    });
+  }
+})
+
+const btnRefresh = () => {
+  // 点击刷新按钮:路由组件销毁
+  flag.value = false
+  nextTick(() => {
+    flag.value = true
+  })
+}
+
+const btnCloseOther = () => {
+  if (currentPickedTabs !== '') {
+    tagsViewStore.removeOtherTagsView(currentPickedTabs)
+    $router.push({
+      path: tagsViewStore.visitedViews[0]
+          .path,
+    })
+  }
+}
+
+const btnCloseAll = () => {
+  if (currentPickedTabs !== '') {
+    tagsViewStore.removeAllTagsView()
+    $router.push({
+      path: tagsViewStore.visitedViews[0]
+          .path,
+    })
+  }
 }
 </script>
 
@@ -79,5 +149,36 @@ const tabRemove = (name: TabPaneName) => {
   opacity: 1;
   opacity: 1;
   transform: scale(1);
+}
+
+
+.contextmenu {
+  width: 100px;
+  margin: 0;
+  border: 1px solid #ccc;
+  background: #fff;
+  z-index: 3000;
+  position: absolute;
+  list-style-type: none;
+  padding: 5px 0;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+  box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.2);
+}
+
+.contextmenu li {
+  margin: 0;
+  padding: 0px 2px;
+  margin: 4px 0px;
+}
+
+.contextmenu li:hover {
+  background: #f2f2f2;
+  cursor: pointer;
+}
+
+.contextmenu li button {
+  color: #2c3e50;
 }
 </style>
