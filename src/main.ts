@@ -20,6 +20,8 @@ import router from '@/router'
 import '@/utils/permission'
 // 引入 store
 import store from '@/store'
+// 引入全局指令
+import { hasPermission } from '@/directive/hasPermission'
 
 // 获取应用实例
 const app = createApp(App)
@@ -38,6 +40,9 @@ app.use(router)
 
 // 注册 store
 app.use(store)
+
+// 全局指令
+hasPermission(app)
 
 // 挂载应用
 app.mount('#app')

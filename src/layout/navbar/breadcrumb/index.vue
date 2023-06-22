@@ -11,10 +11,15 @@
       :to="item.path"
       v-show="item.meta.title"
     >
-<!--      <el-icon>-->
-<!--        <component :is="item.meta.icon"></component>-->
-<!--      </el-icon>-->
-      <SvgIcon :name="item.meta.icon" width="16px" height="16px" style="margin-bottom: -2px"></SvgIcon>
+      <!--      <el-icon>-->
+      <!--        <component :is="item.meta.icon"></component>-->
+      <!--      </el-icon>-->
+      <SvgIcon
+        :name="item.meta.icon ? item.meta.icon : ''"
+        width="16px"
+        height="16px"
+        style="margin-bottom: -2px"
+      ></SvgIcon>
       <span style="margin-left: 6px; margin-bottom: 24px">
         {{ item.meta.title }}
       </span>

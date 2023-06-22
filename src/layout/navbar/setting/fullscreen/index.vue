@@ -13,8 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-
-import {ref} from "vue";
+import { ref } from 'vue'
 
 let isFull = ref<boolean>(false)
 

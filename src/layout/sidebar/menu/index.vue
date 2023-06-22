@@ -7,10 +7,16 @@
         v-if="!item.meta.isHidden"
         @click="routeJump"
       >
-<!--        <el-icon>-->
-<!--          <component :is="item.meta.icon"></component>-->
-<!--        </el-icon>-->
-        <SvgIcon :name="item.meta.icon" width="20px" height="20px" color="white" style="margin-right: 6px"></SvgIcon>
+        <!--        <el-icon>-->
+        <!--          <component :is="item.meta.icon"></component>-->
+        <!--        </el-icon>-->
+        <SvgIcon
+          :name="item.meta.icon"
+          width="20px"
+          height="20px"
+          color="white"
+          style="margin-right: 6px"
+        ></SvgIcon>
         <template #title>
           <span>
             {{ item.meta.title }}
@@ -25,10 +31,16 @@
         v-if="!item.children[0].meta.isHidden"
         @click="routeJump"
       >
-<!--        <el-icon>-->
-<!--          <component :is="item.children[0].meta.icon"></component>-->
-<!--        </el-icon>-->
-        <SvgIcon :name="item.children[0].meta.icon" width="20px" height="20px" color="white" style="margin-right: 6px"></SvgIcon>
+        <!--        <el-icon>-->
+        <!--          <component :is="item.children[0].meta.icon"></component>-->
+        <!--        </el-icon>-->
+        <SvgIcon
+          :name="item.children[0].meta.icon"
+          width="20px"
+          height="20px"
+          color="white"
+          style="margin-right: 6px"
+        ></SvgIcon>
         <template #title>
           <span>
             {{ item.children[0].meta.title }}
@@ -42,10 +54,16 @@
       :index="item.path"
     >
       <template #title>
-<!--        <el-icon>-->
-<!--          <component :is="item.meta.icon"></component>-->
-<!--        </el-icon>-->
-        <SvgIcon :name="item.meta.icon" width="20px" height="20px" color="white" style="margin-right: 6px"></SvgIcon>
+        <!--        <el-icon>-->
+        <!--          <component :is="item.meta.icon"></component>-->
+        <!--        </el-icon>-->
+        <SvgIcon
+          :name="item.meta.icon"
+          width="20px"
+          height="20px"
+          color="white"
+          style="margin-right: 6px"
+        ></SvgIcon>
         <span>
           {{ item.meta.title }}
         </span>

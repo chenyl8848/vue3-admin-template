@@ -10,7 +10,7 @@ import {
   UserInfoResponse,
 } from './type'
 import { ResponseData } from '@/api/type'
-import {SysRoleData} from "@/api/auth/role/type";
+import { SysRoleData } from '@/api/auth/role/type'
 
 enum API {
   LOGIN_URL = '/user/login',
@@ -62,8 +62,13 @@ export const batchDeleteUser = (requestData: Array<number>) =>
 
 // 获取用户已分配角色
 export const getAssignedUserRole = (requestData: number) =>
-    request.post<any, SysRoleData>(`${API.GET_ASSIGNED_USER_ROLE_URL}/${requestData}`)
+  request.post<any, SysRoleData>(
+    `${API.GET_ASSIGNED_USER_ROLE_URL}/${requestData}`,
+  )
 
 // 用户分配角色
 export const assignedUserRole = (userId: number, roldIds: Array<number>) =>
-    request.post<any, ResponseData>(`${API.ASSIGN_USER_ROLE_URL}/${userId}`, roldIds)
+  request.post<any, ResponseData>(
+    `${API.ASSIGN_USER_ROLE_URL}/${userId}`,
+    roldIds,
+  )

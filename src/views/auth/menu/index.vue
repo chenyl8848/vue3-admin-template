@@ -9,26 +9,26 @@
           </el-button>
         </template>
         <el-input
-            v-model="filterText"
-            placeholder="请输入菜单名称"
-            style="margin-bottom: 12px"
-            clearable
+          v-model="filterText"
+          placeholder="请输入菜单名称"
+          style="margin-bottom: 12px"
+          clearable
         />
         <el-scrollbar height="600px">
           <el-tree
-              :data="data"
-              :props="defaultProps"
-              @node-click="handleNodeClick"
-              @node-expand="handleNodeExpand"
-              ref="treeRef"
-              class="filter-tree"
-              :filter-node-method="filterNode"
-              :expand-on-click-node="false"
-              node-key="id"
-              :default-expanded-keys="expandNodeKeyData"
-              @check-change="checkNodeChange"
-              check-strictly
-              show-checkbox
+            :data="data"
+            :props="defaultProps"
+            @node-click="handleNodeClick"
+            @node-expand="handleNodeExpand"
+            ref="treeRef"
+            class="filter-tree"
+            :filter-node-method="filterNode"
+            :expand-on-click-node="false"
+            node-key="id"
+            :default-expanded-keys="expandNodeKeyData"
+            @check-change="checkNodeChange"
+            check-strictly
+            show-checkbox
           />
         </el-scrollbar>
       </el-card>
@@ -36,34 +36,34 @@
     <div class="menu-right">
       <el-card class="box-card">
         <el-form
-            :model="form"
-            label-width="120px"
-            ref="ruleFormRef"
-            :rules="rules"
+          :model="form"
+          label-width="120px"
+          ref="ruleFormRef"
+          :rules="rules"
         >
           <el-form-item label="菜单名称：" prop="menuName">
             <el-input
-                v-model="form.menuName"
-                clearable
-                placeholder="请输入菜单名称"
+              v-model="form.menuName"
+              clearable
+              placeholder="请输入菜单名称"
             />
           </el-form-item>
           <el-form-item label="菜单编码：" prop="menuCode">
             <el-input
-                v-model="form.menuCode"
-                clearable
-                placeholder="请输入菜单编码"
+              v-model="form.menuCode"
+              clearable
+              placeholder="请输入菜单编码"
             />
           </el-form-item>
           <el-form-item label="父级菜单：" prop="pid">
             <el-tree-select
-                v-model="form.pid"
-                :data="data"
-                :render-after-expand="false"
-                :props="defaultProps"
-                check-strictly
-                style="width: 100%"
-                clearable
+              v-model="form.pid"
+              :data="data"
+              :render-after-expand="false"
+              :props="defaultProps"
+              check-strictly
+              style="width: 100%"
+              clearable
             />
           </el-form-item>
           <el-form-item label="菜单类型：">
@@ -74,9 +74,9 @@
           </el-form-item>
           <el-form-item label="菜单路径：">
             <el-input
-                v-model="form.path"
-                clearable
-                placeholder="请输入菜单路径"
+              v-model="form.path"
+              clearable
+              placeholder="请输入菜单路径"
             />
           </el-form-item>
           <el-form-item label="菜单图标：">
@@ -85,11 +85,23 @@
             <!--              clearable-->
             <!--              placeholder="请输入菜单图标"-->
             <!--            />-->
-            <el-popover placement="bottom" :width="400" trigger="click" v-model:visible="popoverVisible"
-                        style="height: 200px">
+            <el-popover
+              placement="bottom"
+              :width="400"
+              trigger="click"
+              v-model:visible="popoverVisible"
+              style="height: 200px"
+            >
               <template #reference>
-                <el-input v-model="form.menuIcon" placeholder="请选择图标" clearable>
-                  <template #prefix v-if="form.menuIcon && form.menuIcon !== ''">
+                <el-input
+                  v-model="form.menuIcon"
+                  placeholder="请选择图标"
+                  clearable
+                >
+                  <template
+                    #prefix
+                    v-if="form.menuIcon && form.menuIcon !== ''"
+                  >
                     <SvgIcon :name="form.menuIcon"></SvgIcon>
                   </template>
                 </el-input>
@@ -99,31 +111,31 @@
           </el-form-item>
           <el-form-item label="菜单顺序：">
             <el-input-number
-                v-model="form.sort"
-                :min="0"
-                :max="10"
-                style="width: 100%"
+              v-model="form.sort"
+              :min="0"
+              :max="10"
+              style="width: 100%"
             />
           </el-form-item>
           <el-form-item label="菜单状态：">
             <el-switch
-                v-model="form.status"
-                :active-value="1"
-                :inactive-value="0"
+              v-model="form.status"
+              :active-value="1"
+              :inactive-value="0"
             />
           </el-form-item>
           <el-form-item label="显示状态：">
             <el-switch
-                v-model="form.isHidden"
-                :active-value="1"
-                :inactive-value="0"
+              v-model="form.isHidden"
+              :active-value="1"
+              :inactive-value="0"
             />
           </el-form-item>
           <el-form-item label="是否外链：">
             <el-switch
-                v-model="form.isExternal"
-                :active-value="1"
-                :inactive-value="0"
+              v-model="form.isExternal"
+              :active-value="1"
+              :inactive-value="0"
             />
           </el-form-item>
           <el-form-item>
@@ -138,7 +150,7 @@
 </template>
 
 <script lang="ts" setup>
-import {onMounted, reactive, ref, watch} from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 import {
   ElMessage,
   ElMessageBox,
@@ -203,7 +215,7 @@ const checkNodeChange = (checkedNode, isChecked, isChildrenNodeChecked) => {
     checkedNodeKeyData.push(checkedNode.id)
   } else {
     checkedNodeKeyData = checkedNodeKeyData.filter(
-        (item) => item !== checkedNode.id,
+      (item) => item !== checkedNode.id,
     )
   }
 }
@@ -223,27 +235,27 @@ const btnBatchDeleteMenu = () => {
     cancelButtonText: '取消',
     type: 'warning',
   })
-      .then(async () => {
-        const result = await batchDeleteMenu(checkedNodeKeyData)
-        if (result.code === 200) {
-          ElMessage({
-            type: 'success',
-            message: '删除成功',
-          })
-          menuTree()
-        } else {
-          ElMessage({
-            type: 'error',
-            message: result.message,
-          })
-        }
-      })
-      .catch(() => {
+    .then(async () => {
+      const result = await batchDeleteMenu(checkedNodeKeyData)
+      if (result.code === 200) {
         ElMessage({
-          type: 'info',
-          message: '取消成功',
+          type: 'success',
+          message: '删除成功',
         })
+        menuTree()
+      } else {
+        ElMessage({
+          type: 'error',
+          message: result.message,
+        })
+      }
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '取消成功',
       })
+    })
 }
 
 const menuTree = async () => {
@@ -274,9 +286,9 @@ const form = reactive<AddOrUpdateMenuRequest>({
   isExternal: 0,
 })
 const rules = reactive<FormRules>({
-  menuName: {required: true, message: '菜单名称不能为空', trigger: 'blur'},
-  menuCode: {required: true, message: '菜单编码不能为空', trigger: 'blur'},
-  pid: {required: true, message: '父级菜单不能为空', trigger: 'blur'},
+  menuName: { required: true, message: '菜单名称不能为空', trigger: 'blur' },
+  menuCode: { required: true, message: '菜单编码不能为空', trigger: 'blur' },
+  pid: { required: true, message: '父级菜单不能为空', trigger: 'blur' },
 })
 const loading = ref<boolean>(false)
 const popoverVisible = ref<boolean>(false)
@@ -290,7 +302,7 @@ const onSubmit = async () => {
   console.log('submit!')
   await ruleFormRef.value.validate()
   loading.value = false
-  const {id} = form
+  const { id } = form
   if (id === 0) {
     // 新增
     const result = await addMenu(form)

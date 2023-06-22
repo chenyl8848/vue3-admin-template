@@ -17,6 +17,7 @@ const useUserStore = defineStore('User', {
       menuList: constantRoute,
       username: '',
       avatar: '',
+      btnPermissions: [],
     }
   },
   actions: {

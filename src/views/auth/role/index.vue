@@ -63,10 +63,10 @@
                 删除
               </el-button>
               <el-button
-                  link
-                  size="small"
-                  type="primary"
-                  @click="btnAssignMenu(row)"
+                link
+                size="small"
+                type="primary"
+                @click="btnAssignMenu(row)"
               >
                 分配菜单权限
               </el-button>
@@ -126,34 +126,32 @@
         </template>
       </el-dialog>
 
-      <el-drawer
-          v-model="drawer"
-          title="分配菜单权限"
-          direction="rtl"
-      >
+      <el-drawer v-model="drawer" title="分配菜单权限" direction="rtl">
         <el-input
-            v-model="filterText"
-            placeholder="请输入菜单名称"
-            style="margin-bottom: 12px"
-            clearable
+          v-model="filterText"
+          placeholder="请输入菜单名称"
+          style="margin-bottom: 12px"
+          clearable
         />
-          <el-tree
-              :data="menuTreeData"
-              :props="defaultProps"
-              ref="treeRef"
-              class="filter-tree"
-              :filter-node-method="filterNode"
-              :expand-on-click-node="false"
-              :default-checked-keys="defaultCheckedKeys"
-              @check-change="checkNodeChange"
-              node-key="id"
-              show-checkbox
-              default-expand-all
-              check-strictly
-          />
+        <el-tree
+          :data="menuTreeData"
+          :props="defaultProps"
+          ref="treeRef"
+          class="filter-tree"
+          :filter-node-method="filterNode"
+          :expand-on-click-node="false"
+          :default-checked-keys="defaultCheckedKeys"
+          @check-change="checkNodeChange"
+          node-key="id"
+          show-checkbox
+          default-expand-all
+          check-strictly
+        />
         <template #footer>
           <el-button @click="drawer = false">取消</el-button>
-          <el-button type="primary" @click="drawerConfirm" :loading="loading">确定</el-button>
+          <el-button type="primary" @click="drawerConfirm" :loading="loading">
+            确定
+          </el-button>
         </template>
       </el-drawer>
     </el-card>
@@ -161,7 +159,7 @@
 </template>
 
 <script lang="ts" setup>
-import {onMounted, reactive, ref, watch} from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 import {
   addRole,
   assignMenu,
@@ -178,10 +176,16 @@ import {
   SysRoleQueryRequest,
   SysRoleResponse,
 } from '@/api/auth/role/type'
-import {ElMessage, ElMessageBox, ElTree, FormInstance, FormRules} from 'element-plus'
-import {GetMenuTreeResponse, SysMenuResponse} from "@/api/auth/menu/type";
-import {getMenuTree} from "@/api/auth/menu";
-import {ResponseData} from "@/api/type";
+import {
+  ElMessage,
+  ElMessageBox,
+  ElTree,
+  FormInstance,
+  FormRules,
+} from 'element-plus'
+import { GetMenuTreeResponse, SysMenuResponse } from '@/api/auth/menu/type'
+import { getMenuTree } from '@/api/auth/menu'
+import { ResponseData } from '@/api/type'
 
 const queryForm = reactive<SysRoleQueryRequest>({
   roleName: '',
@@ -354,9 +358,11 @@ const btnAssignMenu = async (row: SysRoleResponse) => {
   const result: GetMenuTreeResponse = await getMenuTree()
   if (result.code === 200) {
     menuTreeData.value = result.data
-    const resultData:GetMenuTreeResponse = await getAssignedMenu(row.id);
+    const resultData: GetMenuTreeResponse = await getAssignedMenu(row.id)
     if (resultData.code === 200) {
-      defaultCheckedKeys.value = resultData.data.map(item => item.id) as Array<number>
+      defaultCheckedKeys.value = resultData.data.map(
+        (item) => item.id,
+      ) as Array<number>
     } else {
       ElMessage.error(resultData.message)
     }
@@ -370,23 +376,22 @@ const checkNodeChange = (checkedNode, isChecked, isChildrenNodeChecked) => {
     checkedNodeKeyData.push(checkedNode.id)
   } else {
     checkedNodeKeyData = checkedNodeKeyData.filter(
-        (item) => item !== checkedNode.id,
+      (item) => item !== checkedNode.id,
     )
   }
 }
 
 const drawerConfirm = async () => {
   loading.value = true
-  const result:ResponseData = await assignMenu(roleId, checkedNodeKeyData);
+  const result: ResponseData = await assignMenu(roleId, checkedNodeKeyData)
   if (result.code === 200) {
-    ElMessage.success("分配菜单成功")
+    ElMessage.success('分配菜单成功')
     drawer.value = false
   } else {
     ElMessage.error(result.message)
   }
   loading.value = false
 }
-
 </script>
 
 <style lang="scss" scoped>

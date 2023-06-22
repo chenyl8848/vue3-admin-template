@@ -5,6 +5,7 @@ export interface UserState {
   menuList: RouteRecordRaw[]
   username: string | null
   avatar: string | null
+  btnPermissions?: Array<string>
 }
 
 export interface TagsView {
