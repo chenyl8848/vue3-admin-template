@@ -1,5 +1,7 @@
 import { PageRequestData, PageResponseData, ResponseData } from '../../type'
 import ex = CSS.ex
+import { SysMenuResponse } from '@/api/auth/menu/type'
+import { SysRoleResponse } from '@/api/auth/role/type'
 
 // 登录接口请求参数类型
 export interface LoginRequest {
@@ -18,9 +20,9 @@ interface UserInfo {
   username: string
   password: string
   desc: string
-  roles: []
-  buttons: []
-  routes: []
+  roles: Array<SysRoleResponse>
+  buttons: Array<string>
+  menus: Array<SysMenuResponse>
   token: string
 }
 

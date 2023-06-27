@@ -44,53 +44,53 @@ export const constantRoute: Array<RouteRecordRaw> = [
       },
     ],
   },
-  {
-    path: '/auth',
-    component: () => import('@/layout/index.vue'),
-    name: 'auth',
-    meta: {
-      title: '权限管理',
-      isHidden: true,
-      // icon: 'Lock',
-      icon: 'lock',
-    },
-    redirect: '/auth/user',
-    children: [
-      {
-        path: '/auth/user',
-        component: () => import('@/views/auth/user/index.vue'),
-        name: 'user',
-        meta: {
-          title: '用户管理',
-          isHidden: false,
-          // icon: 'UserFilled',
-          icon: 'user',
-        },
-      },
-      {
-        path: '/auth/role',
-        component: () => import('@/views/auth/role/index.vue'),
-        name: 'role',
-        meta: {
-          title: '角色管理',
-          isHidden: false,
-          // icon: 'Avatar',
-          icon: 'role',
-        },
-      },
-      {
-        path: '/auth/menu',
-        component: () => import('@/views/auth/menu/index.vue'),
-        name: 'menu',
-        meta: {
-          title: '菜单管理',
-          isHidden: false,
-          // icon: 'Grid',
-          icon: 'menu',
-        },
-      },
-    ],
-  },
+  // {
+  //   path: '/auth',
+  //   component: () => import('@/layout/index.vue'),
+  //   name: 'auth',
+  //   meta: {
+  //     title: '权限管理',
+  //     isHidden: true,
+  //     // icon: 'Lock',
+  //     icon: 'lock',
+  //   },
+  //   redirect: '/auth/user',
+  //   children: [
+  //     {
+  //       path: '/auth/user',
+  //       component: () => import('@/views/auth/user/index.vue'),
+  //       name: 'user',
+  //       meta: {
+  //         title: '用户管理',
+  //         isHidden: false,
+  //         // icon: 'UserFilled',
+  //         icon: 'user',
+  //       },
+  //     },
+  //     {
+  //       path: '/auth/role',
+  //       component: () => import('@/views/auth/role/index.vue'),
+  //       name: 'role',
+  //       meta: {
+  //         title: '角色管理',
+  //         isHidden: false,
+  //         // icon: 'Avatar',
+  //         icon: 'role',
+  //       },
+  //     },
+  //     {
+  //       path: '/auth/menu',
+  //       component: () => import('@/views/auth/menu/index.vue'),
+  //       name: 'menu',
+  //       meta: {
+  //         title: '菜单管理',
+  //         isHidden: false,
+  //         // icon: 'Grid',
+  //         icon: 'menu',
+  //       },
+  //     },
+  //   ],
+  // },
   {
     path: '/system',
     component: () => import('@/layout/index.vue'),

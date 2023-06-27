@@ -4,6 +4,7 @@ import axios, { AxiosInstance } from 'axios'
 import { ElMessage } from 'element-plus'
 import store from '@/store'
 import useUserStore from '@/store/module/user'
+import setting from '@/setting'
 
 // 1、创建 axios 实例
 let request: AxiosInstance = axios.create({
@@ -17,7 +18,8 @@ let request: AxiosInstance = axios.create({
 request.interceptors.request.use((config) => {
   let userStore = useUserStore(store)
   // 给 config 配置请求头
-  config.headers.token = userStore.token
+  let tokenKey = setting.TOKEN_KEY
+  config.headers[tokenKey] = userStore.token
   // 返回配置对象
   return config
 })
@@ -26,14 +28,23 @@ request.interceptors.request.use((config) => {
 request.interceptors.response.use(
   (response) => {
     // 成功回调
-    // 简化响应对象
-    return response.data
+    let userStore = useUserStore(store)
+
+    if (response.data.code === 401) {
+      ElMessage.error(response.data.message)
+      userStore.userLogout()
+      location.href = '/'
+    } else {
+      // 简化响应对象
+      return response.data
+    }
   },
   (error) => {
     // 失败回调
     // 响应信息
     let message = ''
     // 响应状态码
+    console.log(error, 'status')
     let status = error.response.status
 
     switch (status) {

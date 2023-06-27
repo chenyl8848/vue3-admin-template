@@ -1,9 +1,5 @@
 // 引入路由
-import {
-  createRouter,
-  createWebHashHistory,
-  createWebHistory,
-} from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import { constantRoute } from '@/router/routes'
 
 // 创建路由管理器

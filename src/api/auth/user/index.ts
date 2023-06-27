@@ -13,8 +13,10 @@ import { ResponseData } from '@/api/type'
 import { SysRoleData } from '@/api/auth/role/type'
 
 enum API {
-  LOGIN_URL = '/user/login',
-  GET_USER_INFO_URL = '/user/info',
+  // LOGIN_URL = '/user/login',
+  // GET_USER_INFO_URL = '/user/info',
+  LOGIN_URL = '/sysuser/login',
+  GET_USER_INFO_URL = '/sysuser/info',
   GET_USER_PAGE_LIST_URL = '/sysuser/pageList',
   GET_USER_URL = '/sysuser/',
   ADD_USER_URL = '/sysuser/add',

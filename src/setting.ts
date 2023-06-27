@@ -1,6 +1,6 @@
 // 全局变量设置
 export default {
-  TOKEN_KEY: 'token',
+  TOKEN_KEY: 'apiToken',
   LOGO_PATH: '/logo.png',
   LOGO_TITLE: '后台管理模板',
   DOCUMENT_TITLE: '后台管理模板',

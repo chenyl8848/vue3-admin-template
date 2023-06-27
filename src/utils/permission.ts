@@ -47,11 +47,13 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach((to, from, next) => {
   document.title = `${to.meta.title} - ${setting.DOCUMENT_TITLE}`
-  tagsViewStore.addTagsView({
-    title: to.meta.title,
-    name: to.path,
-    path: to.path,
-  })
-  tagsViewStore.changeEditTabs(to.path)
+  if (!to.meta.isHidden) {
+    tagsViewStore.addTagsView({
+      title: to.meta.title,
+      name: to.path,
+      path: to.path,
+    })
+    tagsViewStore.changeEditTabs(to.path)
+  }
   NProgress.done()
 })
