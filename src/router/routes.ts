@@ -91,42 +91,42 @@ export const constantRoute: Array<RouteRecordRaw> = [
   //     },
   //   ],
   // },
-  {
-    path: '/system',
-    component: () => import('@/layout/index.vue'),
-    name: 'system',
-    meta: {
-      title: '系统管理',
-      isHidden: true,
-      // icon: 'Tools',
-      icon: 'system',
-    },
-    redirect: '/system/dict',
-    children: [
-      {
-        path: '/system/dict',
-        component: () => import('@/views/system/dict/index.vue'),
-        name: 'dict',
-        meta: {
-          title: '字典管理',
-          isHidden: false,
-          // icon: 'Collection',
-          icon: 'dict',
-        },
-      },
-      {
-        path: '/system/log',
-        component: () => import('@/views/system/log/index.vue'),
-        name: 'log',
-        meta: {
-          title: '操作日志',
-          isHidden: false,
-          // icon: 'Operation',
-          icon: 'log',
-        },
-      },
-    ],
-  },
+  // {
+  //   path: '/system',
+  //   component: () => import('@/layout/index.vue'),
+  //   name: 'system',
+  //   meta: {
+  //     title: '系统管理',
+  //     isHidden: true,
+  //     // icon: 'Tools',
+  //     icon: 'system',
+  //   },
+  //   redirect: '/system/dict',
+  //   children: [
+  //     {
+  //       path: '/system/dict',
+  //       component: () => import('@/views/system/dict/index.vue'),
+  //       name: 'dict',
+  //       meta: {
+  //         title: '字典管理',
+  //         isHidden: false,
+  //         // icon: 'Collection',
+  //         icon: 'dict',
+  //       },
+  //     },
+  //     {
+  //       path: '/system/log',
+  //       component: () => import('@/views/system/log/index.vue'),
+  //       name: 'log',
+  //       meta: {
+  //         title: '操作日志',
+  //         isHidden: false,
+  //         // icon: 'Operation',
+  //         icon: 'log',
+  //       },
+  //     },
+  //   ],
+  // },
   {
     path: '/404',
     component: () => import('@/views/404/index.vue'),
@@ -135,13 +135,13 @@ export const constantRoute: Array<RouteRecordRaw> = [
       isHidden: true,
     },
   },
-  {
-    path: '/:pathMatch(.*)*',
-    redirect: '404',
-    name: 'any',
-    meta: {
-      title: '任意路由',
-      isHidden: true,
-    },
-  },
+  // {
+  //   path: '/:pathMatch(.*)*',
+  //   redirect: '404',
+  //   name: 'any',
+  //   meta: {
+  //     title: '任意路由',
+  //     isHidden: true,
+  //   },
+  // },
 ]

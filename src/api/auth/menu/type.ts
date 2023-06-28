@@ -6,6 +6,7 @@ export interface SysMenuResponse {
   menuName: string
   menuCode: string
   menuIcon: string
+  component: string
   path: string
   type: number
   status: number
@@ -27,6 +28,7 @@ export interface AddOrUpdateMenuRequest {
   menuName: string
   menuCode: string
   menuIcon: string
+  component: string
   path: string
   type: number
   status: number

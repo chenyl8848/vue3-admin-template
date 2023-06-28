@@ -13,7 +13,7 @@ import { RouteRecordRaw } from 'vue-router'
 import { SysMenuResponse } from '@/api/auth/menu/type'
 import router from '@/router'
 
-const modules = import.meta.glob('@/views/**/*.vue')
+const modules = import.meta.glob('@/**/*.vue')
 
 // 定义 userStore
 const useUserStore = defineStore('User', {
@@ -28,7 +28,7 @@ const useUserStore = defineStore('User', {
   },
   actions: {
     // 用户登录
-    async userLogin(data: LoginRequest) {
+    userLogin: async function(data: LoginRequest) {
       const result: LoginResponse = await login(data)
       // const result: LoginResponse = {
       //   code: 200,
@@ -46,7 +46,7 @@ const useUserStore = defineStore('User', {
     },
 
     // 获取用户信息
-    async getUserInfo() {
+    getUserInfo: async function () {
       const result: UserInfoResponse = await getUserInfo()
       // const result: UserInfoResponse = {
       //   code: 200,
@@ -82,10 +82,14 @@ const useUserStore = defineStore('User', {
     },
 
     // 用户退出登录
-    async userLogout() {
+    userLogout: function () {
       REMOVE_TOKEN()
       this.username = ''
       this.avatar = ''
+
+      // 退出登录的时候，清空路由
+      router.replace({path: '/login'})
+      location.reload()
     },
   },
   getters: {},
@@ -119,8 +123,8 @@ const generateDynamicRoutes = (
       // 路由名
       name: menu.menuCode,
       // 路由所在组件
-      component: () => import('@/views/auth/user/index.vue'),
-      // component: modules[`/src/views/auth/user/index.vue`],
+      // component: () => import(`@/${menu.component}/index.vue`),
+      component: modules[`/src/${menu.component}/index.vue`],
       meta: {
         title: menu.menuName,
         icon: menu.menuIcon,

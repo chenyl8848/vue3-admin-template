@@ -72,6 +72,13 @@
               <el-radio :label="2">按钮</el-radio>
             </el-radio-group>
           </el-form-item>
+          <el-form-item label="路由组件：">
+            <el-input
+              v-model="form.component"
+              clearable
+              placeholder="请输入路由组件"
+            />
+          </el-form-item>
           <el-form-item label="菜单路径：">
             <el-input
               v-model="form.path"
@@ -200,6 +207,7 @@ const handleNodeClick = (data: SysMenuResponse) => {
   form.menuIcon = data.menuIcon
   form.type = data.type
   form.status = data.status
+  form.component = data.component
   form.path = data.path
   form.isHidden = data.isHidden
   form.sort = data.sort
@@ -278,6 +286,7 @@ const form = reactive<AddOrUpdateMenuRequest>({
   menuName: '',
   menuCode: '',
   menuIcon: '',
+  component: '',
   path: '',
   type: 1,
   status: 1,
@@ -331,6 +340,7 @@ const resetForm = () => {
   form.menuName = ''
   form.menuCode = ''
   form.menuIcon = ''
+  form.component = ''
   form.path = ''
   form.type = 1
   form.status = 1
