@@ -171,10 +171,11 @@ import {
 } from '@/api/auth/role'
 import {
   AddOrUpdateRoleRequest,
-  GetRoleListRequest,
+  SysRolePageRequest,
   GetRoleListResponse,
   SysRoleQueryRequest,
-  SysRoleResponse,
+  SysRole,
+  SysRolePageResponse,
 } from '@/api/auth/role/type'
 import {
   ElMessage,
@@ -183,15 +184,15 @@ import {
   FormInstance,
   FormRules,
 } from 'element-plus'
-import { GetMenuTreeResponse, SysMenuResponse } from '@/api/auth/menu/type'
+import { MenuTreeResponse, SysMenu } from '@/api/auth/menu/type'
 import { getMenuTree } from '@/api/auth/menu'
-import { ResponseData } from '@/api/type'
+import { Response } from '@/api/type'
 
 const queryForm = reactive<SysRoleQueryRequest>({
   roleName: '',
   roleCode: '',
 })
-const tableData = ref<Array<SysRoleResponse>>()
+const tableData = ref<Array<SysRole>>()
 const tableTotal = ref<number>(0)
 const pageNo = ref<number>(1)
 const pageSize = ref<number>(10)
@@ -202,12 +203,12 @@ const btnReset = () => {
 }
 
 const search = async () => {
-  let requestData: GetRoleListRequest = {
+  let requestData: SysRolePageRequest = {
     pageNo: pageNo.value,
     pageSize: pageSize.value,
     queryParams: queryForm,
   }
-  const result: GetRoleListResponse = await getRolePageList(requestData)
+  const result: SysRolePageResponse = await getRolePageList(requestData)
   if (result.code === 200) {
     tableData.value = result.data.records
     tableTotal.value = result.data.total
@@ -226,7 +227,7 @@ const btnAddRole = () => {
   dialogTitle.value = '新增角色'
 }
 
-const btnUpdateRole = async (row: SysRoleResponse) => {
+const btnUpdateRole = async (row: SysRole) => {
   const result = await getRoleById(row.id)
   if (result.code === 200) {
     form.roleName = result.data.roleName
@@ -240,7 +241,7 @@ const btnUpdateRole = async (row: SysRoleResponse) => {
   }
 }
 
-const btnDeleteRole = async (row: SysRoleResponse) => {
+const btnDeleteRole = async (row: SysRole) => {
   ElMessageBox.confirm(`确认要删除角色【${row.roleName}】吗?`, 'Warning', {
     confirmButtonText: '确认',
     cancelButtonText: '取消',
@@ -334,7 +335,7 @@ const drawer = ref<boolean>(false)
 let roleId = -1
 const filterText = ref('')
 const treeRef = ref<InstanceType<typeof ElTree>>()
-const menuTreeData = ref<Array<SysMenuResponse>>([])
+const menuTreeData = ref<Array<SysMenu>>([])
 const defaultProps = {
   children: 'children',
   label: 'menuName',
@@ -347,18 +348,18 @@ watch(filterText, (val) => {
   treeRef.value!.filter(val)
 })
 
-const filterNode = (value: string, data: SysMenuResponse) => {
+const filterNode = (value: string, data: SysMenu) => {
   if (!value) return true
   return data.menuName.includes(value)
 }
 
-const btnAssignMenu = async (row: SysRoleResponse) => {
+const btnAssignMenu = async (row: SysRole) => {
   drawer.value = true
   roleId = row.id
-  const result: GetMenuTreeResponse = await getMenuTree()
+  const result: MenuTreeResponse = await getMenuTree()
   if (result.code === 200) {
     menuTreeData.value = result.data
-    const resultData: GetMenuTreeResponse = await getAssignedMenu(row.id)
+    const resultData: MenuTreeResponse = await getAssignedMenu(row.id)
     if (resultData.code === 200) {
       defaultCheckedKeys.value = resultData.data.map(
         (item) => item.id,
@@ -383,7 +384,7 @@ const checkNodeChange = (checkedNode, isChecked, isChildrenNodeChecked) => {
 
 const drawerConfirm = async () => {
   loading.value = true
-  const result: ResponseData = await assignMenu(roleId, checkedNodeKeyData)
+  const result = await assignMenu(roleId, checkedNodeKeyData)
   if (result.code === 200) {
     ElMessage.success('分配菜单成功')
     drawer.value = false

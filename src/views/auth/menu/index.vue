@@ -167,8 +167,8 @@ import {
 } from 'element-plus'
 import {
   AddOrUpdateMenuRequest,
-  GetMenuTreeResponse,
-  SysMenuResponse,
+  MenuTreeResponse,
+  SysMenu,
 } from '@/api/auth/menu/type'
 import {
   addMenu,
@@ -180,7 +180,7 @@ import IconSelect from '@/components/IconSelect/index.vue'
 
 const filterText = ref('')
 const treeRef = ref<InstanceType<typeof ElTree>>()
-const data = ref<Array<SysMenuResponse>>([])
+const data = ref<Array<SysMenu>>([])
 const expandNodeKeyData = ref<Array<number>>([])
 let checkedNodeKeyData = []
 
@@ -194,12 +194,12 @@ watch(filterText, (val) => {
   treeRef.value!.filter(val)
 })
 
-const filterNode = (value: string, data: SysMenuResponse) => {
+const filterNode = (value: string, data: SysMenu) => {
   if (!value) return true
   return data.menuName.includes(value)
 }
 
-const handleNodeClick = (data: SysMenuResponse) => {
+const handleNodeClick = (data: SysMenu) => {
   form.id = data.id
   form.pid = data.pid
   form.menuName = data.menuName
@@ -267,7 +267,7 @@ const btnBatchDeleteMenu = () => {
 }
 
 const menuTree = async () => {
-  const result: GetMenuTreeResponse = await getMenuTree()
+  const result: MenuTreeResponse = await getMenuTree()
   if (result.code === 200) {
     data.value = result.data
   } else {

@@ -1,7 +1,11 @@
 <template>
   <div class="logo">
     <img :src="setting.LOGO_PATH" />
-    <p>{{ setting.LOGO_TITLE }}</p>
+    <p>
+      <a href="/">
+        {{ setting.LOGO_TITLE }}
+      </a>
+    </p>
   </div>
 </template>
 
@@ -26,6 +30,11 @@ import setting from '@/setting'
   p {
     font-size: $layout-sidebar-logo-title-size;
     margin-left: 12px;
+
+    a {
+      color: white;
+      text-decoration: none;
+    }
   }
 }
 </style>

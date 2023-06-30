@@ -26,7 +26,7 @@ import { useRoute } from 'vue-router'
 let $route = useRoute()
 
 let userStore = useUserStore()
-const menuList = userStore.menuList
+const menuList = userStore.menus
 let isFold = ref()
 
 onMounted(() => {

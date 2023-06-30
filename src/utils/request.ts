@@ -44,7 +44,6 @@ request.interceptors.response.use(
     // 响应信息
     let message = ''
     // 响应状态码
-    console.log(error, 'status')
     let status = error.response.status
 
     switch (status) {

@@ -184,16 +184,16 @@ import {
 import {
   AddOrUpdateUserRequest,
   DeleteUserRequest,
-  GetUserByIdResponse,
-  GetUserListRequest,
-  GetUserListResponse,
   SysUserResponse,
+  SysUserPageRequest,
+  SysUserPageResponse,
+  SysUser,
 } from '@/api/auth/user/type'
-import { ResponseData } from '@/api/type'
+import { Response } from '@/api/type'
 import {
-  SysRoleData,
+  SysRoleListResponse,
   SysRoleQueryRequest,
-  SysRoleResponse,
+  SysRole,
 } from '@/api/auth/role/type'
 import { getRoleList } from '@/api/auth/role'
 
@@ -202,20 +202,20 @@ const queryForm = reactive({
   name: '',
 })
 const multipleTableRef = ref<InstanceType<typeof ElTable>>()
-const multipleSelection = ref<Array<SysUserResponse>>([])
+const multipleSelection = ref<Array<SysUser>>([])
 
-const tableData = ref<Array<SysUserResponse>>()
+const tableData = ref<Array<SysUser>>()
 const tableTotal = ref<number>(0)
 const pageNo = ref<number>(1)
 const pageSize = ref<number>(10)
 
 const search = async () => {
-  const requestData: GetUserListRequest = {
+  const requestData: SysUserPageRequest = {
     pageNo: pageNo.value,
     pageSize: pageSize.value,
     queryParams: queryForm,
   }
-  const result: GetUserListResponse = await getUserPageList(requestData)
+  const result: SysUserPageResponse = await getUserPageList(requestData)
   if (result.code == 200) {
     tableData.value = result.data.records
     tableTotal.value = result.data.total
@@ -234,7 +234,7 @@ onMounted(() => {
   search()
 })
 
-const handleSelectionChange = (val: Array<SysUserResponse>) => {
+const handleSelectionChange = (val: Array<SysUser>) => {
   multipleSelection.value = val
 }
 
@@ -265,7 +265,7 @@ const addOrUpdateUser = async (type: string) => {
       ElMessage.warning('请选择要修改的一条数据')
       return
     }
-    const result: GetUserByIdResponse = await getUserById(
+    const result: SysUserResponse = await getUserById(
       multipleSelection.value[0].id,
     )
     form.id = result.data.id
@@ -290,7 +290,7 @@ const dialogConfirm = async () => {
   }
   if (id === 0) {
     // 新增
-    let reuslt: ResponseData = await addUser(addOrUpdateUserRequest)
+    let reuslt: Response = await addUser(addOrUpdateUserRequest)
     if (reuslt.code === 200) {
       ElMessage.success('新增用户成功')
       dialogVisible.value = false
@@ -302,7 +302,7 @@ const dialogConfirm = async () => {
   } else {
     // 修改
     addOrUpdateUserRequest.id = form.id
-    let result: ResponseData = await updateUser(addOrUpdateUserRequest)
+    let result: Response = await updateUser(addOrUpdateUserRequest)
     if (result.code === 200) {
       ElMessage.success('修改用户成功')
       dialogVisible.value = false
@@ -361,11 +361,11 @@ const btnBatchDeleteUser = async () => {
 
 const roleIds = ref<Array<number>>([])
 let userId = -1
-const options = ref<Array<SysRoleResponse>>([])
+const options = ref<Array<SysRole>>([])
 
-const btnAssignRole = async (row: SysUserResponse) => {
+const btnAssignRole = async (row: SysUser) => {
   userId = row.id
-  const result: SysRoleData = await getAssignedUserRole(row.id)
+  const result: SysRoleListResponse = await getAssignedUserRole(row.id)
   if (result.code === 200) {
     roleIds.value = result.data.map((item) => item.id)
   }
@@ -374,7 +374,7 @@ const btnAssignRole = async (row: SysUserResponse) => {
     roleCode: '',
     roleName: '',
   }
-  const sysRoleData: SysRoleData = await getRoleList(requestData)
+  const sysRoleData: SysRoleListResponse = await getRoleList(requestData)
   if (sysRoleData.code === 200) {
     options.value = sysRoleData.data
   }

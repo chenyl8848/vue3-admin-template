@@ -1,19 +1,23 @@
 // 定义全局接口返回参数
-export interface ResponseData {
+export interface Response<T> {
   code: number
   message: string
-  data?: any
+  data?: T
 }
 
-export interface PageRequestData {
+export interface PageRequest<T> {
   pageNo: number
   pageSize: number
-  queryParams?: any
+  queryParams?: T
 }
 
-export interface PageResponseData {
+export interface PageDataResponse<T> {
   total: number
   size: number
   count: number
-  records: Array<any>
+  records: Array<T>
+}
+
+export interface PageResponse<T> extends Response<PageDataResponse<T>> {
+  data: PageDataResponse<T>
 }

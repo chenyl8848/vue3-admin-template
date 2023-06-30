@@ -1,7 +1,7 @@
 // 全局自定义指令：按钮权限指令
-import pinia from '@/store'
+import store from '@/store'
 import useUserStore from '@/store/module/user'
-const userStore = useUserStore(pinia)
+const userStore = useUserStore(store)
 
 export const hasPermission = (app: any) => {
   app.directive('hasPermission', {

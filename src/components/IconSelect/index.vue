@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineEmits, defineProps, ref } from 'vue'
+import { defineEmits, ref } from 'vue'
 import iconList from '@/components/IconSelect/requireIcons'
 
 const icon = ref<string>('')

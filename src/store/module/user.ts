@@ -10,7 +10,7 @@ import { GET_TOKEN, REMOVE_TOKEN, SET_TOKEN } from '@/utils/token'
 import { constantRoute } from '@/router/routes'
 import { UserState } from '@/store/module/types/type'
 import { RouteRecordRaw } from 'vue-router'
-import { SysMenuResponse } from '@/api/auth/menu/type'
+import { SysMenu } from '@/api/auth/menu/type'
 import router from '@/router'
 
 const modules = import.meta.glob('@/**/*.vue')
@@ -20,7 +20,7 @@ const useUserStore = defineStore('User', {
   state: (): UserState => {
     return {
       token: GET_TOKEN(),
-      menuList: constantRoute,
+      menus: constantRoute,
       username: '',
       avatar: '',
       btnPermissions: [],
@@ -28,7 +28,7 @@ const useUserStore = defineStore('User', {
   },
   actions: {
     // 用户登录
-    userLogin: async function(data: LoginRequest) {
+    userLogin: async function (data: LoginRequest) {
       const result: LoginResponse = await login(data)
       // const result: LoginResponse = {
       //   code: 200,
@@ -70,10 +70,11 @@ const useUserStore = defineStore('User', {
           result.data.avatar ||
           'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'
         this.btnPermissions = result.data.buttons
-        this.menuList.value = mergeMenuRoutes(
+        this.menus.value = mergeMenuRoutes(
           generateDynamicRoutes(result.data.menus),
           constantRoute,
         )
+        addAnyRoute()
 
         return 'ok'
       } else {
@@ -88,7 +89,7 @@ const useUserStore = defineStore('User', {
       this.avatar = ''
 
       // 退出登录的时候，清空路由
-      router.replace({path: '/login'})
+      router.replace({ path: '/login' })
       location.reload()
     },
   },
@@ -109,7 +110,7 @@ const mergeMenuRoutes = (
 
 // 生成动态路由
 const generateDynamicRoutes = (
-  menus: Array<SysMenuResponse>,
+  menus: Array<SysMenu>,
 ): Array<RouteRecordRaw> => {
   let routes = []
   menus.forEach((menu) => {
@@ -137,6 +138,19 @@ const generateDynamicRoutes = (
     routes.push(route)
   })
   return routes
+}
+
+const addAnyRoute = () => {
+  let route: RouteRecordRaw = {
+    path: '/:pathMatch(.*)*',
+    redirect: '404',
+    name: 'any',
+    meta: {
+      title: '任意路由',
+      isHidden: true,
+    },
+  }
+  router.addRoute(route)
 }
 
 // 暴露 userStore

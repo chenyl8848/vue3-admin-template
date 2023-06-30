@@ -1,6 +1,6 @@
-import { ResponseData } from '@/api/type'
+import { Response } from '@/api/type'
 
-export interface SysMenuResponse {
+export interface SysMenu {
   id?: number
   pid?: number
   menuName: string
@@ -14,12 +14,8 @@ export interface SysMenuResponse {
   isHidden: number
   sort: number
   isExternal: number
-  children?: Array<SysMenuResponse>
+  children?: Array<SysMenu>
   select?: boolean
-}
-
-export interface GetMenuTreeResponse extends ResponseData {
-  data: Array<SysMenuResponse>
 }
 
 export interface AddOrUpdateMenuRequest {
@@ -35,4 +31,8 @@ export interface AddOrUpdateMenuRequest {
   isHidden: number
   sort: number
   isExternal: number
+}
+
+export interface MenuTreeResponse extends Response<Array<SysMenu>> {
+  data: Array<SysMenu>
 }
