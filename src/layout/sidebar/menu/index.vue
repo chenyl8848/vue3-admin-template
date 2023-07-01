@@ -54,9 +54,9 @@
         :index="item.path"
     >
       <template #title>
-        <!--                <el-icon>-->
-        <!--                  <component :is="item.meta.icon"></component>-->
-        <!--                </el-icon>-->
+<!--                        <el-icon>-->
+<!--                          <component :is="item.meta.icon"></component>-->
+<!--                        </el-icon>-->
         <SvgIcon
             :name="item.meta.icon"
             width="20px"
@@ -75,8 +75,7 @@
 
 <script lang="ts" setup>
 import {useRouter} from 'vue-router'
-import {onMounted, reactive, ref} from 'vue'
-import $mitt from '@/utils/mitt'
+import {onMounted, reactive, ref, watch} from 'vue'
 
 defineProps(['menuList'])
 let $router = useRouter()
@@ -95,5 +94,4 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
 </style>

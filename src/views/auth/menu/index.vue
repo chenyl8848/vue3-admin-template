@@ -94,7 +94,7 @@
             <!--            />-->
             <el-popover
               placement="bottom"
-              :width="400"
+              :width="420"
               trigger="click"
               v-model:visible="popoverVisible"
               style="height: 200px"
