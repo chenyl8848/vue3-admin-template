@@ -13,7 +13,7 @@
         class="icon-select-list"
       >
         <el-button>
-          <SvgIcon :name="item"></SvgIcon>
+          <SvgIcon :name="item" fill="black"></SvgIcon>
         </el-button>
       </div>
     </el-scrollbar>

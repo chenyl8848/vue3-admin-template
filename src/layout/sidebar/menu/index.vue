@@ -5,7 +5,7 @@
       <el-menu-item
           :index="item.path"
           v-if="!item.meta.isHidden"
-          @click="routeJump"
+          @click="routeJump(item)"
       >
         <!--        <el-icon>-->
         <!--          <component :is="item.meta.icon"></component>-->
@@ -29,7 +29,7 @@
       <el-menu-item
           :index="item.children[0].path"
           v-if="!item.children[0].meta.isHidden"
-          @click="routeJump"
+          @click="routeJump(item)"
       >
         <!--        <el-icon>-->
         <!--          <component :is="item.children[0].meta.icon"></component>-->
@@ -54,9 +54,9 @@
         :index="item.path"
     >
       <template #title>
-<!--                        <el-icon>-->
-<!--                          <component :is="item.meta.icon"></component>-->
-<!--                        </el-icon>-->
+        <!--                        <el-icon>-->
+        <!--                          <component :is="item.meta.icon"></component>-->
+        <!--                        </el-icon>-->
         <SvgIcon
             :name="item.meta.icon"
             width="20px"
@@ -74,15 +74,22 @@
 </template>
 
 <script lang="ts" setup>
-import {useRouter} from 'vue-router'
+import {RouteRecordRaw, useRouter} from 'vue-router'
 import {onMounted, reactive, ref, watch} from 'vue'
+import {SysMenuEnum} from "@/api/auth/menu/type";
 
 defineProps(['menuList'])
 let $router = useRouter()
 
 // 路由跳转
-const routeJump = (vc: any) => {
-  $router.push(vc.index)
+const routeJump = (item: RouteRecordRaw) => {
+
+  if (item.meta?.isExternal) {
+    window.open(item.path.substring(1, item.path.length))
+  } else {
+    $router.push(item.path)
+  }
+
 }
 
 </script>

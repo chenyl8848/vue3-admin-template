@@ -1,4 +1,15 @@
-import { Response } from '@/api/type'
+import {Response} from '@/api/type'
+
+export enum SysMenuEnum {
+  HIDDEN = 0,
+  NO_HIDDEN = 1,
+  NO_EXTERNAL = 0,
+  EXTERNAL = 1,
+  MENU= 1,
+  BUTTON = 2,
+  DISABLE = 0,
+  ENABLE = 1
+}
 
 export interface SysMenu {
   id?: number

@@ -10,7 +10,7 @@ import { GET_TOKEN, REMOVE_TOKEN, SET_TOKEN } from '@/utils/token'
 import { constantRoute } from '@/router/routes'
 import { UserState } from '@/store/module/types/type'
 import { RouteRecordRaw } from 'vue-router'
-import { SysMenu } from '@/api/auth/menu/type'
+import {SysMenu, SysMenuEnum} from '@/api/auth/menu/type'
 import router from '@/router'
 
 const modules = import.meta.glob('@/**/*.vue')
@@ -74,7 +74,6 @@ const useUserStore = defineStore('User', {
           generateDynamicRoutes(result.data.menus),
           constantRoute,
         )
-        addAnyRoute()
 
         return 'ok'
       } else {
@@ -120,7 +119,7 @@ const generateDynamicRoutes = (
     }
     let route = {
       // 路由的路径
-      path: menu.path,
+      path: menu.isExternal === SysMenuEnum.EXTERNAL ? "/" + menu.path : menu.path,
       // 路由名
       name: menu.menuCode,
       // 路由所在组件
@@ -129,7 +128,10 @@ const generateDynamicRoutes = (
       meta: {
         title: menu.menuName,
         icon: menu.menuIcon,
-        isHidden: menu.isHidden === 1 ? false : true,
+        // isHidden: menu.isHidden === 1? false : true,
+        // isExternal: menu.isExternal ===  0? false : true
+        isHidden: menu.isHidden === SysMenuEnum.HIDDEN,
+        isExternal: menu.isExternal === SysMenuEnum.EXTERNAL
       },
       // 路由的子路由
       children: children.length > 0 ? children : null,
@@ -138,19 +140,6 @@ const generateDynamicRoutes = (
     routes.push(route)
   })
   return routes
-}
-
-const addAnyRoute = () => {
-  let route: RouteRecordRaw = {
-    path: '/:pathMatch(.*)*',
-    redirect: '404',
-    name: 'any',
-    meta: {
-      title: '任意路由',
-      isHidden: true,
-    },
-  }
-  router.addRoute(route)
 }
 
 // 暴露 userStore

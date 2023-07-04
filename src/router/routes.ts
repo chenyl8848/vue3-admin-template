@@ -6,6 +6,7 @@ declare module 'vue-router' {
   interface RouteMeta {
     title?: string
     isHidden?: boolean
+    isExternal?: boolean
     icon?: string
   }
 }
@@ -19,6 +20,7 @@ export const constantRoute: Array<RouteRecordRaw> = [
     meta: {
       title: '登录',
       isHidden: true,
+      isExternal: false
     },
   },
   {
@@ -37,9 +39,10 @@ export const constantRoute: Array<RouteRecordRaw> = [
         name: 'home',
         meta: {
           title: '首页',
-          isHidden: false,
           // icon: 'HomeFilled',
           icon: 'home',
+          isHidden: false,
+          isExternal: false
         },
       },
     ],
@@ -135,6 +138,7 @@ export const constantRoute: Array<RouteRecordRaw> = [
     meta: {
       title: '404',
       isHidden: true,
+      isExternal: false
     },
   },
   // {
