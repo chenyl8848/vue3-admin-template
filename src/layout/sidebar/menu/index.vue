@@ -77,13 +77,13 @@
 import {RouteRecordRaw, useRouter} from 'vue-router'
 import {onMounted, reactive, ref, watch} from 'vue'
 import {SysMenuEnum} from "@/api/auth/menu/type";
+import $mitt from "@/utils/mitt";
 
 defineProps(['menuList'])
 let $router = useRouter()
 
 // 路由跳转
 const routeJump = (item: RouteRecordRaw) => {
-
   if (item.meta?.isExternal) {
     window.open(item.path.substring(1, item.path.length))
   } else {
@@ -101,4 +101,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
 </style>
