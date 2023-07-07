@@ -3,7 +3,7 @@ import {CaptchaResponse, CaptchaType, CheckCaptchaRequest} from "@/api/auth/capt
 import {Response} from "@/api/type";
 
 enum API {
-    GENERATE_CAPTCHA_URL = '/captcha/generate?captcha=',
+    GENERATE_CAPTCHA_URL = '/captcha/generate?captchaType=',
     CHECK_CAPTCHA_URL = '/captcha/check?id='
 }
 
