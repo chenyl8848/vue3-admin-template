@@ -22,6 +22,8 @@ import '@/utils/permission'
 import store from '@/store'
 // 引入全局指令
 import { hasPermission } from '@/directive/hasPermission'
+// 引入百度地图
+import baiduMap from 'vue3-baidu-map-gl'
 
 // 获取应用实例
 const app = createApp(App)
@@ -43,6 +45,12 @@ app.use(store)
 
 // 全局指令
 hasPermission(app)
+
+// 注册百度地图
+app.use(baiduMap, {
+  ak: 'cwHsf5i2fAQAlijOyELx5COtkFhItaSm',
+  plugins: ['TrackAnimation']
+})
 
 // 挂载应用
 app.mount('#app')
