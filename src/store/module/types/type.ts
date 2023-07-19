@@ -12,4 +12,5 @@ export interface TagsView {
   title: string
   name: string
   path: string
+  close: boolean
 }

@@ -8,6 +8,7 @@ let useTagsViewStore = defineStore('tagsView', () => {
       title: '首页',
       name: '/home',
       path: '/home',
+      close: false
     },
   ])
 
@@ -30,7 +31,7 @@ let useTagsViewStore = defineStore('tagsView', () => {
   const removeOtherTagsView = (name: string) => {
     if (visitedViews.value.length > 1) {
       visitedViews.value = visitedViews.value.filter(
-        (item) => item.name === name,
+        (item) => item.name === name || item.name === '/home',
       )
       // visitedViews.value.splice(1, visitedViews.value.length)
     }

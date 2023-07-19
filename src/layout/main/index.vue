@@ -1,59 +1,116 @@
 <template>
-  <div v-show="contextMenuVisible">
-    <ul
-      :style="{ left: menuLeft + 'px', top: menuTop + 'px' }"
-      class="contextmenu"
-    >
-      <li>
-        <el-button link icon="Refresh" @click="btnRefresh">刷新</el-button>
-      </li>
-      <li>
-        <el-button link icon="CircleClose" @click="btnCloseOther">
-          关闭其他
+  <!--  <div v-show="contextMenuVisible">-->
+  <!--    <ul-->
+  <!--        :style="{ left: menuLeft + 'px', top: menuTop + 'px' }"-->
+  <!--        class="contextmenu"-->
+  <!--    >-->
+  <!--      <li>-->
+  <!--        <el-button link icon="Refresh" @click="btnRefresh">刷新</el-button>-->
+  <!--      </li>-->
+  <!--      <li>-->
+  <!--        <el-button link icon="CircleClose" @click="btnCloseOther">-->
+  <!--          关闭其他-->
+  <!--        </el-button>-->
+  <!--      </li>-->
+  <!--      <li>-->
+  <!--        <el-button link icon="CircleCloseFilled" @click="btnCloseAll">-->
+  <!--          关闭所有-->
+  <!--        </el-button>-->
+  <!--      </li>-->
+  <!--    </ul>-->
+  <!--  </div>-->
+  <!--  <el-tabs-->
+  <!--      v-model="tagsViewStore.editableTabsValue"-->
+  <!--      type="card"-->
+  <!--      class="demo-tabs"-->
+  <!--      closable-->
+  <!--      @tabClick="tabClick"-->
+  <!--      @tabRemove="tabRemove"-->
+  <!--      @contextmenu.prevent.native="openContextMenu($event)"-->
+  <!--  >-->
+  <!--    <el-tab-pane-->
+  <!--        v-for="item in tagsViewStore.visitedViews"-->
+  <!--        :key="item.name"-->
+  <!--        :label="item.title"-->
+  <!--        :name="item.name"-->
+  <!--    >-->
+  <!--      <router-view v-slot="{ Component }">-->
+  <!--        <transition name="fade">-->
+  <!--          <component :is="Component" v-if="flag"></component>-->
+  <!--        </transition>-->
+  <!--      </router-view>-->
+  <!--    </el-tab-pane>-->
+  <!--  </el-tabs>-->
+
+  <div class="tabs-box">
+    <div class="tabs-menu">
+      <el-tabs
+          v-model="tagsViewStore.editableTabsValue"
+          type="card"
+          class="demo-tabs"
+          @tabClick="tabClick"
+          @tabRemove="tabRemove"
+      >
+        <el-tab-pane
+            v-for="item in tagsViewStore.visitedViews"
+            :key="item.name"
+            :label="item.title"
+            :name="item.name"
+            :closable="item.close"
+        >
+          <router-view v-slot="{ Component }">
+            <transition name="fade">
+              <component :is="Component" v-if="flag"></component>
+            </transition>
+          </router-view>
+        </el-tab-pane>
+      </el-tabs>
+      <el-dropdown trigger="click">
+        <el-button type="primary" size="small">
+          更多
+          <el-icon class="el-icon--right">
+            <arrow-down/>
+          </el-icon>
         </el-button>
-      </li>
-      <li>
-        <el-button link icon="CircleCloseFilled" @click="btnCloseAll">
-          关闭所有
-        </el-button>
-      </li>
-    </ul>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item @click="btnRefresh">
+              <el-icon class="el-icon--right">
+                <Refresh/>
+              </el-icon>
+              刷新
+            </el-dropdown-item>
+            <el-dropdown-item @click="btnCloseOther">
+              <el-icon class="el-icon--right">
+                <CircleClose/>
+              </el-icon>
+              关闭其他
+            </el-dropdown-item>
+            <el-dropdown-item @click="btnCloseAll">
+              <el-icon class="el-icon--right">
+                <CircleCloseFilled/>
+              </el-icon>
+              关闭所有
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+    </div>
   </div>
-  <el-tabs
-    v-model="tagsViewStore.editableTabsValue"
-    type="card"
-    class="demo-tabs"
-    closable
-    @tabClick="tabClick"
-    @tabRemove="tabRemove"
-    @contextmenu.prevent.native="openContextMenu($event)"
-  >
-    <el-tab-pane
-      v-for="item in tagsViewStore.visitedViews"
-      :key="item.name"
-      :label="item.title"
-      :name="item.name"
-    >
-      <router-view v-slot="{ Component }">
-        <transition name="fade">
-          <component :is="Component" v-if="flag"></component>
-        </transition>
-      </router-view>
-    </el-tab-pane>
-  </el-tabs>
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted, ref, watch } from 'vue'
+import {nextTick, onMounted, ref, watch} from 'vue'
 import $mitt from '@/utils/mitt'
 import useTagsViewStore from '@/store/module/tagsView'
-import type { TabPaneName, TabsPaneContext } from 'element-plus'
-import { useRouter } from 'vue-router'
+import type {TabPaneName, TabsPaneContext} from 'element-plus'
+import {useRoute, useRouter} from 'vue-router'
 
 let isRefresh = ref(true)
 let flag = ref(true)
 
 let $router = useRouter()
+let $route = useRoute()
 let tagsViewStore = useTagsViewStore()
 
 onMounted(() => {
@@ -63,25 +120,25 @@ onMounted(() => {
 })
 
 watch(
-  () => isRefresh.value,
-  () => {
-    // 点击刷新按钮:路由组件销毁
-    flag.value = false
-    nextTick(() => {
-      flag.value = true
-    })
-  },
+    () => isRefresh.value,
+    () => {
+      // 点击刷新按钮:路由组件销毁
+      flag.value = false
+      nextTick(() => {
+        flag.value = true
+      })
+    },
 )
 
 const tabClick = (pane: TabsPaneContext, ev: Event) => {
-  $router.push({ path: tagsViewStore.visitedViews[pane.index].path })
+  $router.push({path: tagsViewStore.visitedViews[pane.index].path})
 }
 
 const tabRemove = (name: TabPaneName) => {
   tagsViewStore.removeTagsView(name)
   $router.push({
     path: tagsViewStore.visitedViews[tagsViewStore.visitedViews.length - 1]
-      .path,
+        .path,
   })
 }
 
@@ -104,14 +161,14 @@ const openContextMenu = (e) => {
 
 //隐藏菜单
 watch(
-  () => contextMenuVisible.value,
-  () => {
-    if (contextMenuVisible.value) {
-      document.body.addEventListener('click', () => {
-        contextMenuVisible.value = false
-      })
-    }
-  },
+    () => contextMenuVisible.value,
+    () => {
+      if (contextMenuVisible.value) {
+        document.body.addEventListener('click', () => {
+          contextMenuVisible.value = false
+        })
+      }
+    },
 )
 
 const btnRefresh = () => {
@@ -123,15 +180,17 @@ const btnRefresh = () => {
 }
 
 const btnCloseOther = () => {
+  currentPickedTabs = $route.path as string
   if (currentPickedTabs !== '') {
     tagsViewStore.removeOtherTagsView(currentPickedTabs)
     $router.push({
-      path: tagsViewStore.visitedViews[0].path,
+      path: tagsViewStore.visitedViews[1].path,
     })
   }
 }
 
 const btnCloseAll = () => {
+  currentPickedTabs = $route.path as string
   if (currentPickedTabs !== '') {
     tagsViewStore.removeAllTagsView()
     $router.push({
@@ -185,5 +244,68 @@ const btnCloseAll = () => {
 
 .contextmenu li button {
   color: #2c3e50;
+}
+
+.tabs-box {
+  background-color: var(--el-bg-color);
+
+  .tabs-menu {
+    position: relative;
+    width: 100%;
+
+    .el-dropdown {
+      position: absolute;
+      top: 8px;
+      right: 13px;
+    }
+
+    :deep(.el-tabs) {
+      .el-tabs__header {
+        box-sizing: border-box;
+        height: 40px;
+        padding: 0 10px;
+        //margin: 0;
+        .el-tabs__nav-wrap {
+          position: absolute;
+          width: calc(100% - 110px);
+
+          .el-tabs__nav {
+            display: flex;
+            border: none;
+
+            .el-tabs__item {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: #afafaf;
+              border: none;
+
+              .tabs-icon {
+                margin: 1.5px 4px 0 0;
+                font-size: 15px;
+              }
+
+              .is-icon-close {
+                margin-top: 1px;
+              }
+
+              &.is-active {
+                color: var(--el-color-primary);
+
+                &::before {
+                  position: absolute;
+                  bottom: 0;
+                  width: 100%;
+                  height: 0;
+                  content: "";
+                  border-bottom: 2px solid var(--el-color-primary) !important;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
 </style>
