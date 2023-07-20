@@ -3,19 +3,19 @@
     <!-- 没有子路由 -->
     <template v-if="!item.children">
       <el-menu-item
-          :index="item.path"
-          v-if="!item.meta.isHidden"
-          @click="routeJump(item)"
+        :index="item.path"
+        v-if="!item.meta.isHidden"
+        @click="routeJump(item)"
       >
         <!--        <el-icon>-->
         <!--          <component :is="item.meta.icon"></component>-->
         <!--        </el-icon>-->
         <SvgIcon
-            :name="item.meta.icon"
-            width="20px"
-            height="20px"
-            color="white"
-            style="margin-right: 6px"
+          :name="item.meta.icon"
+          width="20px"
+          height="20px"
+          color="white"
+          style="margin-right: 6px"
         ></SvgIcon>
         <template #title>
           <span>
@@ -27,19 +27,19 @@
     <!--  只有一个子路由  -->
     <template v-if="item.children && item.children.length === 1">
       <el-menu-item
-          :index="item.children[0].path"
-          v-if="!item.children[0].meta.isHidden"
-          @click="routeJump(item)"
+        :index="item.children[0].path"
+        v-if="!item.children[0].meta.isHidden"
+        @click="routeJump(item)"
       >
         <!--        <el-icon>-->
         <!--          <component :is="item.children[0].meta.icon"></component>-->
         <!--        </el-icon>-->
         <SvgIcon
-            :name="item.children[0].meta.icon"
-            width="20px"
-            height="20px"
-            color="white"
-            style="margin-right: 6px"
+          :name="item.children[0].meta.icon"
+          width="20px"
+          height="20px"
+          color="white"
+          style="margin-right: 6px"
         ></SvgIcon>
         <template #title>
           <span>
@@ -50,19 +50,19 @@
     </template>
     <!--  有子路由且子路由个数大于一  -->
     <el-sub-menu
-        v-if="item.children && item.children.length > 1"
-        :index="item.path"
+      v-if="item.children && item.children.length > 1"
+      :index="item.path"
     >
       <template #title>
         <!--                        <el-icon>-->
         <!--                          <component :is="item.meta.icon"></component>-->
         <!--                        </el-icon>-->
         <SvgIcon
-            :name="item.meta.icon"
-            width="20px"
-            height="20px"
-            color="white"
-            style="margin-right: 6px"
+          :name="item.meta.icon"
+          width="20px"
+          height="20px"
+          color="white"
+          style="margin-right: 6px"
         ></SvgIcon>
         <span>
           {{ item.meta.title }}
@@ -74,10 +74,10 @@
 </template>
 
 <script lang="ts" setup>
-import {RouteRecordRaw, useRouter} from 'vue-router'
-import {onMounted, reactive, ref, watch} from 'vue'
-import {SysMenuEnum} from "@/api/auth/menu/type";
-import $mitt from "@/utils/mitt";
+import { RouteRecordRaw, useRouter } from 'vue-router'
+import { onMounted, reactive, ref, watch } from 'vue'
+import { SysMenuEnum } from '@/api/auth/menu/type'
+import $mitt from '@/utils/mitt'
 
 defineProps(['menuList'])
 let $router = useRouter()
@@ -89,9 +89,7 @@ const routeJump = (item: RouteRecordRaw) => {
   } else {
     $router.push(item.path)
   }
-
 }
-
 </script>
 
 <script lang="ts">
@@ -100,6 +98,4 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

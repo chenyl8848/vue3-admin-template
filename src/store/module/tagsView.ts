@@ -8,7 +8,7 @@ let useTagsViewStore = defineStore('tagsView', () => {
       title: '首页',
       name: '/home',
       path: '/home',
-      close: false
+      close: false,
     },
   ])
 

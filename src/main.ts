@@ -49,7 +49,7 @@ hasPermission(app)
 // 注册百度地图
 app.use(baiduMap, {
   ak: 'cwHsf5i2fAQAlijOyELx5COtkFhItaSm',
-  plugins: ['TrackAnimation']
+  plugins: ['TrackAnimation'],
 })
 
 // 挂载应用

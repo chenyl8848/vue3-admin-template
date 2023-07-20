@@ -20,7 +20,7 @@ export const constantRoute: Array<RouteRecordRaw> = [
     meta: {
       title: '登录',
       isHidden: true,
-      isExternal: false
+      isExternal: false,
     },
   },
   {
@@ -42,7 +42,7 @@ export const constantRoute: Array<RouteRecordRaw> = [
           // icon: 'HomeFilled',
           icon: 'home',
           isHidden: false,
-          isExternal: false
+          isExternal: false,
         },
       },
     ],
@@ -138,7 +138,7 @@ export const constantRoute: Array<RouteRecordRaw> = [
     meta: {
       title: '404',
       isHidden: true,
-      isExternal: false
+      isExternal: false,
     },
   },
   // {

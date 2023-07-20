@@ -2,15 +2,13 @@
   <div class="slider">
     <div class="slider-move">
       <span class="slider-move-span">请依次点击:</span>
-      <img :src="sliderImgSrc" class="tip-img">
+      <img :src="sliderImgSrc" class="tip-img" />
     </div>
     <div class="content" @click="clickWord">
       <div class="bg-img-div">
-        <img :src="bgImgSrc" alt/>
+        <img :src="bgImgSrc" alt />
       </div>
-      <div class="bg-click-div">
-
-      </div>
+      <div class="bg-click-div"></div>
     </div>
     <div class="bottom">
       <button class="close-btn" @click="closeBtn"></button>
@@ -20,21 +18,22 @@
 </template>
 
 <script lang="ts" setup>
-
 // 刷新验证码
-import {CaptchaResponse, CaptchaType} from "@/api/auth/captcha/type";
-import {checkCaptcha, generateCaptcha} from "@/api/auth/captcha";
-import {ElMessage} from "element-plus";
-import {onMounted, ref} from "vue";
-import {Response} from "@/api/type";
-import moment from "moment";
+import { CaptchaResponse, CaptchaType } from '@/api/auth/captcha/type'
+import { checkCaptcha, generateCaptcha } from '@/api/auth/captcha'
+import { ElMessage } from 'element-plus'
+import { onMounted, ref } from 'vue'
+import { Response } from '@/api/type'
+import moment from 'moment'
 
 let currentCaptchaId = ref<string>('')
-let sliderImgSrc = ref<string>("")
-let bgImgSrc = ref<string>("")
+let sliderImgSrc = ref<string>('')
+let bgImgSrc = ref<string>('')
 
 const refreshBtn = async () => {
-  const result: CaptchaResponse = await generateCaptcha(CaptchaType.WORD_IMAGE_CLICK);
+  const result: CaptchaResponse = await generateCaptcha(
+    CaptchaType.WORD_IMAGE_CLICK,
+  )
   if (result.code === 200) {
     reset()
     currentCaptchaId.value = result.data.id
@@ -46,68 +45,71 @@ const refreshBtn = async () => {
 }
 
 // 关闭按钮
-const closeBtn = () => {
-
-}
+const closeBtn = () => {}
 
 onMounted(() => {
   refreshBtn()
 })
 
-let start = 0;
-let startY = 0;
-let movePercent = 0;
-let end = 206;
-let startSlidingTime;
-let entSlidingTime;
-const trackArr = [];
-let clickCount = 0;
+let start = 0
+let startY = 0
+let movePercent = 0
+let end = 206
+let startSlidingTime
+let entSlidingTime
+const trackArr = []
+let clickCount = 0
 
 const clickWord = ($event) => {
-  console.log($event);
-  clickCount++;
+  console.log($event)
+  clickCount++
   if (clickCount === 1) {
-    startSlidingTime = new Date();
+    startSlidingTime = new Date()
     // move 轨迹
-    window.addEventListener("mousemove", move);
+    window.addEventListener('mousemove', move)
   }
   trackArr.push({
     x: $event.offsetX,
     y: $event.offsetY,
-    type: "click",
-    t: (new Date().getTime() - startSlidingTime.getTime())
-  });
-  const left = $event.offsetX - 10;
-  const top = $event.offsetY - 10;
+    type: 'click',
+    t: new Date().getTime() - startSlidingTime.getTime(),
+  })
+  const left = $event.offsetX - 10
+  const top = $event.offsetY - 10
   // $(".bg-click-div").append("<span class='click-span' style='left:" + left + "px;top: " + top + "px'>" + clickCount + "</span>")
-  const bgClickDiv = document.getElementsByClassName("bg-click-div")
-  console.log(bgClickDiv, "bngggggggggggg")
-  let clickSpan = document.createElement("span")
+  const bgClickDiv = document.getElementsByClassName('bg-click-div')
+  console.log(bgClickDiv, 'bngggggggggggg')
+  let clickSpan = document.createElement('span')
   clickSpan.style.cssText = `left: ${left}px; top: ${top}px; color: green`
-  clickSpan.innerText = clickCount + ""
+  clickSpan.innerText = clickCount + ''
   bgClickDiv[1].appendChild(clickSpan)
   if (clickCount === 4) {
     // 校验
-    entSlidingTime = new Date();
-    window.removeEventListener("mousemove", move);
-    valid();
+    entSlidingTime = new Date()
+    window.removeEventListener('mousemove', move)
+    valid()
   }
 }
 
 const move = (event) => {
   if (event instanceof TouchEvent) {
-    event = event.touches[0];
+    event = event.touches[0]
   }
   // console.log("x:", event.offsetX, "y:", event.offsetY, "time:" ,new Date().getTime() - startSlidingTime.getTime());
-  trackArr.push({x: event.offsetX, y:event.offsetY, t: (new Date().getTime() - startSlidingTime.getTime()), type: "move"});
+  trackArr.push({
+    x: event.offsetX,
+    y: event.offsetY,
+    t: new Date().getTime() - startSlidingTime.getTime(),
+    type: 'move',
+  })
 }
 
 const valid = async () => {
-  console.log("=======================")
-  console.log("aaa",trackArr);
-  console.log("startTime", startSlidingTime);
-  console.log("endTime", entSlidingTime);
-  console.log("track", JSON.stringify(trackArr));
+  console.log('=======================')
+  console.log('aaa', trackArr)
+  console.log('startTime', startSlidingTime)
+  console.log('endTime', entSlidingTime)
+  console.log('track', JSON.stringify(trackArr))
   let data = {
     // bgImageWidth: $(".bg-img-div").width(),
     // bgImageHeight: $(".content").height(),
@@ -118,16 +120,19 @@ const valid = async () => {
     templateImageHeight: -1,
     startSlidingTime: moment(startSlidingTime).format('YYYY-MM-DD HH:mm:ss'),
     endSlidingTime: moment(entSlidingTime).format('YYYY-MM-DD HH:mm:ss'),
-    trackList: trackArr
-  };
-  console.log(data);
+    trackList: trackArr,
+  }
+  console.log(data)
 
-  const result:Response<boolean> = await checkCaptcha(currentCaptchaId.value, data);
+  const result: Response<boolean> = await checkCaptcha(
+    currentCaptchaId.value,
+    data,
+  )
   if (result.code === 200) {
     if (result.data) {
-      ElMessage.success("验证成功")
+      ElMessage.success('验证成功')
     } else {
-      ElMessage.error("验证失败")
+      ElMessage.error('验证失败')
     }
     refreshBtn()
   } else {
@@ -139,25 +144,24 @@ const reset = () => {
   // $("#slider-move-btn").css("background-position", "-5px 11.79625%")
   // $("#slider-move-btn").css("transform", "translate(0px, 0px)")
   // $("#slider-img-div").css("transform", "translate(0px, 0px)")
-  start = 0;
-  startSlidingTime = null;
-  entSlidingTime = null;
-  trackArr.length = 0;
+  start = 0
+  startSlidingTime = null
+  entSlidingTime = null
+  trackArr.length = 0
   // $(".bg-click-div span").remove();
-  const bgClickDiv = document.getElementsByClassName("bg-click-div")
+  const bgClickDiv = document.getElementsByClassName('bg-click-div')
   while (bgClickDiv[1].hasChildNodes()) {
     bgClickDiv[1].removeChild(bgClickDiv[1].firstChild)
   }
-  clickCount = 0;
-  movePercent = 0;
-  currentCaptchaId.value = "";
-  startY = 0;
-  window.removeEventListener("mousemove", move);
+  clickCount = 0
+  movePercent = 0
+  currentCaptchaId.value = ''
+  startY = 0
+  window.removeEventListener('mousemove', move)
 }
 </script>
 
 <style lang="scss" scoped>
-
 .slider {
   background-color: #fff;
   width: 278px;
@@ -219,13 +223,19 @@ const reset = () => {
   margin-top: 10px;
 }
 
-.refresh-btn, .close-btn, .slider-move-track, .slider-move-btn {
-  background: url(https://static.geetest.com/static/ant/sprite.1.2.4.png) no-repeat;
+.refresh-btn,
+.close-btn,
+.slider-move-track,
+.slider-move-btn {
+  background: url(https://static.geetest.com/static/ant/sprite.1.2.4.png)
+    no-repeat;
 }
-.close-btn:hover, .refresh-btn:hover {
-  cursor: pointer
+.close-btn:hover,
+.refresh-btn:hover {
+  cursor: pointer;
 }
-.refresh-btn, .close-btn {
+.refresh-btn,
+.close-btn {
   display: inline-block;
   border: none;
   margin-left: 6px;

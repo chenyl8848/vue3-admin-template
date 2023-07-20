@@ -2,45 +2,50 @@
   <div class="slider rotate">
     <div class="content">
       <div class="bg-img-div">
-        <img :src="bgImgSrc" alt/>
+        <img :src="bgImgSrc" alt />
       </div>
       <div class="rotate-img-div" :class="rotateImgClass">
-        <img :src="rotateImgSrc" alt/>
+        <img :src="rotateImgSrc" alt />
       </div>
     </div>
     <div class="slider-move">
-      <div class="slider-move-track">
-        拖动滑块旋转正确位置
-      </div>
-      <div class="slider-move-btn" @mousedown="moveBtnDown" :class="moveBtnClass"></div>
+      <div class="slider-move-track">拖动滑块旋转正确位置</div>
+      <div
+        class="slider-move-btn"
+        @mousedown="moveBtnDown"
+        :class="moveBtnClass"
+      ></div>
     </div>
     <div class="bottom">
-      <button class="close-btn"  @click="closeBtn"></button>
+      <button class="close-btn" @click="closeBtn"></button>
       <button class="refresh-btn" @click="refreshBtn"></button>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-
-import {onMounted, ref} from "vue";
-import {checkCaptcha, generateCaptcha} from "@/api/auth/captcha";
-import {CaptchaResponse, CaptchaType, CheckCaptchaRequest} from "@/api/auth/captcha/type";
-import { Response } from "@/api/type";
-import {ElMessage} from "element-plus";
-import moment from "moment";
+import { onMounted, ref } from 'vue'
+import { checkCaptcha, generateCaptcha } from '@/api/auth/captcha'
+import {
+  CaptchaResponse,
+  CaptchaType,
+  CheckCaptchaRequest,
+} from '@/api/auth/captcha/type'
+import { Response } from '@/api/type'
+import { ElMessage } from 'element-plus'
+import moment from 'moment'
 
 let currentCaptchaId = ref(null)
-let bgImgSrc = ref<string>("")
-let rotateImgSrc = ref<string>("")
-let rotateImgClass = ref("")
-let moveBtnClass = ref("")
-let movX = ref("0px")
-let rotateAngle = ref("0deg")
+let bgImgSrc = ref<string>('')
+let rotateImgSrc = ref<string>('')
+let rotateImgClass = ref('')
+let moveBtnClass = ref('')
+let movX = ref('0px')
+let rotateAngle = ref('0deg')
 
 // 刷新验证码
 const refreshBtn = async () => {
-  const result: CaptchaResponse = await generateCaptcha(CaptchaType.ROTATE);
+  const result: CaptchaResponse = await generateCaptcha(CaptchaType.ROTATE)
   if (result.code === 200) {
     reset()
     currentCaptchaId.value = result.data.id
@@ -53,8 +58,7 @@ const refreshBtn = async () => {
 }
 
 // 关闭按钮
-const closeBtn = () => {
-}
+const closeBtn = () => {}
 
 onMounted(() => {
   refreshBtn()
@@ -65,28 +69,35 @@ const moveBtnDown = ($event) => {
 }
 
 const doMove = (currentCaptchaConfig) => {
-  movX.value = currentCaptchaConfig.moveX + "px"
-  rotateAngle.value = currentCaptchaConfig.moveX / (currentCaptchaConfig.end / 360) + "deg"
-  rotateImgClass.value = "rotateImgClass"
-  moveBtnClass.value = "moveBtnClass"
+  movX.value = currentCaptchaConfig.moveX + 'px'
+  rotateAngle.value =
+    currentCaptchaConfig.moveX / (currentCaptchaConfig.end / 360) + 'deg'
+  rotateImgClass.value = 'rotateImgClass'
+  moveBtnClass.value = 'moveBtnClass'
 }
 
 const reset = () => {
-  movX.value = "0px"
-  currentCaptchaId.value = null;
+  movX.value = '0px'
+  currentCaptchaId.value = null
 }
 
-let currentCaptchaConfig;
+let currentCaptchaConfig
 /** 是否打印日志 */
-let isPrintLog = false;
+let isPrintLog = false
 
 const printLog = (...params) => {
   if (isPrintLog) {
-    console.log(JSON.stringify(params));
+    console.log(JSON.stringify(params))
   }
 }
 
-const initConfig = (bgImageWidth, bgImageHeight, sliderImageWidth, sliderImageHeight, end) => {
+const initConfig = (
+  bgImageWidth,
+  bgImageHeight,
+  sliderImageWidth,
+  sliderImageHeight,
+  end,
+) => {
   currentCaptchaConfig = {
     startTime: new Date(),
     trackArr: [],
@@ -95,132 +106,138 @@ const initConfig = (bgImageWidth, bgImageHeight, sliderImageWidth, sliderImageHe
     bgImageHeight,
     sliderImageWidth,
     sliderImageHeight,
-    end
+    end,
   }
-  printLog("init", currentCaptchaConfig);
-  return currentCaptchaConfig;
+  printLog('init', currentCaptchaConfig)
+  return currentCaptchaConfig
 }
 
 const down = (event) => {
-  let targetTouches = event.originalEvent ? event.originalEvent.targetTouches : event.targetTouches;
-  let startX = event.pageX;
-  let startY = event.pageY;
+  let targetTouches = event.originalEvent
+    ? event.originalEvent.targetTouches
+    : event.targetTouches
+  let startX = event.pageX
+  let startY = event.pageY
   if (startX === undefined) {
-    startX = Math.round(targetTouches[0].pageX);
-    startY = Math.round(targetTouches[0].pageY);
+    startX = Math.round(targetTouches[0].pageX)
+    startY = Math.round(targetTouches[0].pageY)
   }
-  currentCaptchaConfig.startX = startX;
-  currentCaptchaConfig.startY = startY;
+  currentCaptchaConfig.startX = startX
+  currentCaptchaConfig.startY = startY
 
-  const pageX = currentCaptchaConfig.startX;
-  const pageY = currentCaptchaConfig.startY;
-  const startTime = currentCaptchaConfig.startTime;
-  const trackArr = currentCaptchaConfig.trackArr;
+  const pageX = currentCaptchaConfig.startX
+  const pageY = currentCaptchaConfig.startY
+  const startTime = currentCaptchaConfig.startTime
+  const trackArr = currentCaptchaConfig.trackArr
   trackArr.push({
     x: pageX - startX,
     y: pageY - startY,
-    type: "down",
-    t: (new Date().getTime() - startTime.getTime())
-  });
-  printLog("start", startX, startY)
+    type: 'down',
+    t: new Date().getTime() - startTime.getTime(),
+  })
+  printLog('start', startX, startY)
   // pc
-  window.addEventListener("mousemove", move);
-  window.addEventListener("mouseup", up);
+  window.addEventListener('mousemove', move)
+  window.addEventListener('mouseup', up)
   // 手机端
-  window.addEventListener("touchmove", move, false);
-  window.addEventListener("touchend", up, false);
+  window.addEventListener('touchmove', move, false)
+  window.addEventListener('touchend', up, false)
 }
 
 const move = (event) => {
   if (event instanceof TouchEvent) {
-    event = event.touches[0];
+    event = event.touches[0]
   }
-  let pageX = Math.round(event.pageX);
-  let pageY = Math.round(event.pageY);
-  const startX = currentCaptchaConfig.startX;
-  const startY = currentCaptchaConfig.startY;
-  const startTime = currentCaptchaConfig.startTime;
-  const end = currentCaptchaConfig.end;
-  const bgImageWidth = currentCaptchaConfig.bgImageWidth;
-  const trackArr = currentCaptchaConfig.trackArr;
-  let moveX = pageX - startX;
+  let pageX = Math.round(event.pageX)
+  let pageY = Math.round(event.pageY)
+  const startX = currentCaptchaConfig.startX
+  const startY = currentCaptchaConfig.startY
+  const startTime = currentCaptchaConfig.startTime
+  const end = currentCaptchaConfig.end
+  const bgImageWidth = currentCaptchaConfig.bgImageWidth
+  const trackArr = currentCaptchaConfig.trackArr
+  let moveX = pageX - startX
   const track = {
     x: pageX - startX,
     y: pageY - startY,
-    type: "move",
-    t: (new Date().getTime() - startTime.getTime())
-  };
-  trackArr.push(track);
-  if (moveX < 0) {
-    moveX = 0;
-  } else if (moveX > end) {
-    moveX = end;
+    type: 'move',
+    t: new Date().getTime() - startTime.getTime(),
   }
-  currentCaptchaConfig.moveX = moveX;
-  currentCaptchaConfig.movePercent = moveX / bgImageWidth;
-  doMove(currentCaptchaConfig);
-  printLog("move", track)
+  trackArr.push(track)
+  if (moveX < 0) {
+    moveX = 0
+  } else if (moveX > end) {
+    moveX = end
+  }
+  currentCaptchaConfig.moveX = moveX
+  currentCaptchaConfig.movePercent = moveX / bgImageWidth
+  doMove(currentCaptchaConfig)
+  printLog('move', track)
 }
 
 const up = (event) => {
-  window.removeEventListener("mousemove", move);
-  window.removeEventListener("mouseup", up);
-  window.removeEventListener("touchmove", move);
-  window.removeEventListener("touchend", up);
+  window.removeEventListener('mousemove', move)
+  window.removeEventListener('mouseup', up)
+  window.removeEventListener('touchmove', move)
+  window.removeEventListener('touchend', up)
   if (event instanceof TouchEvent) {
-    event = event.changedTouches[0];
+    event = event.changedTouches[0]
   }
-  currentCaptchaConfig.stopTime = new Date();
-  let pageX = Math.round(event.pageX);
-  let pageY = Math.round(event.pageY);
-  const startX = currentCaptchaConfig.startX;
-  const startY = currentCaptchaConfig.startY;
-  const startTime = currentCaptchaConfig.startTime;
-  const trackArr = currentCaptchaConfig.trackArr;
+  currentCaptchaConfig.stopTime = new Date()
+  let pageX = Math.round(event.pageX)
+  let pageY = Math.round(event.pageY)
+  const startX = currentCaptchaConfig.startX
+  const startY = currentCaptchaConfig.startY
+  const startTime = currentCaptchaConfig.startTime
+  const trackArr = currentCaptchaConfig.trackArr
 
   const track = {
     x: pageX - startX,
     y: pageY - startY,
-    type: "up",
-    t: (new Date().getTime() - startTime.getTime())
+    type: 'up',
+    t: new Date().getTime() - startTime.getTime(),
   }
 
-  trackArr.push(track);
-  printLog("up", track)
-  valid(currentCaptchaConfig);
+  trackArr.push(track)
+  printLog('up', track)
+  valid(currentCaptchaConfig)
 }
 
 const valid = async (captchaConfig) => {
-
-  let data:CheckCaptchaRequest = {
+  let data: CheckCaptchaRequest = {
     bgImageWidth: captchaConfig.bgImageWidth,
     bgImageHeight: captchaConfig.bgImageHeight,
     templateImageWidth: captchaConfig.templateImageWidth,
     templateImageHeight: captchaConfig.templateImageHeight,
-    startSlidingTime: moment(captchaConfig.startTime).format('YYYY-MM-DD HH:mm:ss'),
-    endSlidingTime: moment(captchaConfig.stopTime).format('YYYY-MM-DD HH:mm:ss'),
-    trackList: captchaConfig.trackArr
-  };
+    startSlidingTime: moment(captchaConfig.startTime).format(
+      'YYYY-MM-DD HH:mm:ss',
+    ),
+    endSlidingTime: moment(captchaConfig.stopTime).format(
+      'YYYY-MM-DD HH:mm:ss',
+    ),
+    trackList: captchaConfig.trackArr,
+  }
 
-  const result:Response<boolean> = await checkCaptcha(currentCaptchaId.value, data);
+  const result: Response<boolean> = await checkCaptcha(
+    currentCaptchaId.value,
+    data,
+  )
   if (result.code === 200) {
     if (result.data) {
-      ElMessage.success("验证成功")
+      ElMessage.success('验证成功')
     } else {
-      ElMessage.error("验证失败")
+      ElMessage.error('验证失败')
       // refreshBtn()
-      movX.value = "0px"
-      rotateAngle.value = "0deg"
+      movX.value = '0px'
+      rotateAngle.value = '0deg'
     }
   } else {
     ElMessage.error(result.message)
   }
 }
-
 </script>
 
 <style scoped lang="scss">
-
 .moveBtnClass {
   transform: translate(v-bind(movX), 0px) !important;
 }
@@ -279,11 +296,16 @@ const valid = async (captchaConfig) => {
   width: 100%;
 }
 
-.refresh-btn, .close-btn, .slider-move-track, .slider-move-btn {
-  background: url(https://static.geetest.com/static/ant/sprite.1.2.4.png) no-repeat;
+.refresh-btn,
+.close-btn,
+.slider-move-track,
+.slider-move-btn {
+  background: url(https://static.geetest.com/static/ant/sprite.1.2.4.png)
+    no-repeat;
 }
 
-.refresh-btn, .close-btn {
+.refresh-btn,
+.close-btn {
   display: inline-block;
   margin-right: 6px;
   border: none;
@@ -314,8 +336,10 @@ const valid = async (captchaConfig) => {
   height: 66px;
 }
 
-.slider-move-btn:hover, .close-btn:hover, .refresh-btn:hover {
-  cursor: pointer
+.slider-move-btn:hover,
+.close-btn:hover,
+.refresh-btn:hover {
+  cursor: pointer;
 }
 
 .bottom .close-btn {

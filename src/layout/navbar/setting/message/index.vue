@@ -10,35 +10,55 @@
         <el-tab-pane label="通知(5)" name="first">
           <div class="message-list">
             <div class="message-item">
-              <img src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif" alt="" class="message-icon" />
+              <img
+                src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
+                alt=""
+                class="message-icon"
+              />
               <div class="message-content">
                 <span class="message-title">一键三连 🧡</span>
                 <span class="message-date">一分钟前</span>
               </div>
             </div>
             <div class="message-item">
-              <img src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif" alt="" class="message-icon" />
+              <img
+                src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
+                alt=""
+                class="message-icon"
+              />
               <div class="message-content">
                 <span class="message-title">一键三连 💙</span>
                 <span class="message-date">一小时前</span>
               </div>
             </div>
             <div class="message-item">
-              <img src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif" alt="" class="message-icon" />
+              <img
+                src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
+                alt=""
+                class="message-icon"
+              />
               <div class="message-content">
                 <span class="message-title">一键三连 💚</span>
                 <span class="message-date">半天前</span>
               </div>
             </div>
             <div class="message-item">
-              <img src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif" alt="" class="message-icon" />
+              <img
+                src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
+                alt=""
+                class="message-icon"
+              />
               <div class="message-content">
                 <span class="message-title">一键三连 💜</span>
                 <span class="message-date">一星期前</span>
               </div>
             </div>
             <div class="message-item">
-              <img src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif" alt="" class="message-icon" />
+              <img
+                src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
+                alt=""
+                class="message-icon"
+              />
               <div class="message-content">
                 <span class="message-title">一键三连 💛</span>
                 <span class="message-date">一个月前</span>
@@ -64,7 +84,7 @@
 </template>
 
 <script lang="ts" setup>
-import {ref} from "vue";
+import { ref } from 'vue'
 
 const activeName = ref<string>('first')
 </script>

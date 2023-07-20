@@ -1,17 +1,19 @@
 <template>
-  <iframe :src="src" frameborder="no" scrolling="auto" style="width: 100%;height: 100%">
-  </iframe>
+  <iframe
+    :src="src"
+    frameborder="no"
+    scrolling="auto"
+    style="width: 100%; height: 100%"
+  ></iframe>
 </template>
 
 <script lang="ts" setup>
-
-import {defineProps} from "vue";
+import { defineProps } from 'vue'
 
 defineProps({
   src: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 })
-
 </script>

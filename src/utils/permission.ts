@@ -57,7 +57,7 @@ router.afterEach((to, from, next) => {
       title: to.meta.title,
       name: to.path,
       path: to.path,
-      close: true
+      close: true,
     })
     tagsViewStore.changeEditTabs(to.path)
   }

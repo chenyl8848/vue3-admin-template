@@ -45,18 +45,18 @@
   <div class="tabs-box">
     <div class="tabs-menu">
       <el-tabs
-          v-model="tagsViewStore.editableTabsValue"
-          type="card"
-          class="demo-tabs"
-          @tabClick="tabClick"
-          @tabRemove="tabRemove"
+        v-model="tagsViewStore.editableTabsValue"
+        type="card"
+        class="demo-tabs"
+        @tabClick="tabClick"
+        @tabRemove="tabRemove"
       >
         <el-tab-pane
-            v-for="item in tagsViewStore.visitedViews"
-            :key="item.name"
-            :label="item.title"
-            :name="item.name"
-            :closable="item.close"
+          v-for="item in tagsViewStore.visitedViews"
+          :key="item.name"
+          :label="item.title"
+          :name="item.name"
+          :closable="item.close"
         >
           <router-view v-slot="{ Component }">
             <transition name="fade">
@@ -69,26 +69,26 @@
         <el-button type="primary" size="small">
           更多
           <el-icon class="el-icon--right">
-            <arrow-down/>
+            <arrow-down />
           </el-icon>
         </el-button>
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item @click="btnRefresh">
               <el-icon class="el-icon--right">
-                <Refresh/>
+                <Refresh />
               </el-icon>
               刷新
             </el-dropdown-item>
             <el-dropdown-item @click="btnCloseOther">
               <el-icon class="el-icon--right">
-                <CircleClose/>
+                <CircleClose />
               </el-icon>
               关闭其他
             </el-dropdown-item>
             <el-dropdown-item @click="btnCloseAll">
               <el-icon class="el-icon--right">
-                <CircleCloseFilled/>
+                <CircleCloseFilled />
               </el-icon>
               关闭所有
             </el-dropdown-item>
@@ -100,11 +100,11 @@
 </template>
 
 <script lang="ts" setup>
-import {nextTick, onMounted, ref, watch} from 'vue'
+import { nextTick, onMounted, ref, watch } from 'vue'
 import $mitt from '@/utils/mitt'
 import useTagsViewStore from '@/store/module/tagsView'
-import type {TabPaneName, TabsPaneContext} from 'element-plus'
-import {useRoute, useRouter} from 'vue-router'
+import type { TabPaneName, TabsPaneContext } from 'element-plus'
+import { useRoute, useRouter } from 'vue-router'
 
 let isRefresh = ref(true)
 let flag = ref(true)
@@ -120,25 +120,25 @@ onMounted(() => {
 })
 
 watch(
-    () => isRefresh.value,
-    () => {
-      // 点击刷新按钮:路由组件销毁
-      flag.value = false
-      nextTick(() => {
-        flag.value = true
-      })
-    },
+  () => isRefresh.value,
+  () => {
+    // 点击刷新按钮:路由组件销毁
+    flag.value = false
+    nextTick(() => {
+      flag.value = true
+    })
+  },
 )
 
 const tabClick = (pane: TabsPaneContext, ev: Event) => {
-  $router.push({path: tagsViewStore.visitedViews[pane.index].path})
+  $router.push({ path: tagsViewStore.visitedViews[pane.index].path })
 }
 
 const tabRemove = (name: TabPaneName) => {
   tagsViewStore.removeTagsView(name)
   $router.push({
     path: tagsViewStore.visitedViews[tagsViewStore.visitedViews.length - 1]
-        .path,
+      .path,
   })
 }
 
@@ -161,14 +161,14 @@ const openContextMenu = (e) => {
 
 //隐藏菜单
 watch(
-    () => contextMenuVisible.value,
-    () => {
-      if (contextMenuVisible.value) {
-        document.body.addEventListener('click', () => {
-          contextMenuVisible.value = false
-        })
-      }
-    },
+  () => contextMenuVisible.value,
+  () => {
+    if (contextMenuVisible.value) {
+      document.body.addEventListener('click', () => {
+        contextMenuVisible.value = false
+      })
+    }
+  },
 )
 
 const btnRefresh = () => {
@@ -297,7 +297,7 @@ const btnCloseAll = () => {
                   bottom: 0;
                   width: 100%;
                   height: 0;
-                  content: "";
+                  content: '';
                   border-bottom: 2px solid var(--el-color-primary) !important;
                 }
               }

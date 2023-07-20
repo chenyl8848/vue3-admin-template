@@ -18,7 +18,7 @@ import Navbar from '@/layout/navbar/index.vue'
 import Main from '@/layout/main/index.vue'
 import TagsView from '@/layout/navbar/tagsview/index.vue'
 
-import {onMounted, ref, watch} from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import $mitt from '@/utils/mitt'
 
 let isFold = ref()
@@ -27,7 +27,6 @@ onMounted(() => {
     isFold.value = params
   })
 })
-
 </script>
 
 <style lang="scss" scoped>

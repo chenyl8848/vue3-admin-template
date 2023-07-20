@@ -1,11 +1,11 @@
 <template>
   <div>
-    <img :src="userStore.avatar"/>
+    <img :src="userStore.avatar" />
     <el-dropdown>
       <span class="el-dropdown-link">
         {{ userStore.username }}
         <el-icon class="el-icon--right">
-          <arrow-down/>
+          <arrow-down />
         </el-icon>
       </span>
       <template #dropdown>
@@ -23,7 +23,7 @@
 
 <script lang="ts" setup>
 import useUserStore from '@/store/module/user'
-import {useRoute, useRouter} from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import setting from '@/setting'
 
 let $router = useRouter()
@@ -38,7 +38,7 @@ const gotoGithub = () => {
 // 退出登录
 const logout = async () => {
   await userStore.userLogout()
-  $router.push({path: '/login', query: {redirect: $route.path}})
+  $router.push({ path: '/login', query: { redirect: $route.path } })
 }
 </script>
 
