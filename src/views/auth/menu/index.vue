@@ -127,15 +127,15 @@
           <el-form-item label="菜单状态：">
             <el-switch
               v-model="form.status"
-              :active-value="1"
-              :inactive-value="0"
+              :active-value="0"
+              :inactive-value="1"
             />
           </el-form-item>
           <el-form-item label="显示状态：">
             <el-switch
               v-model="form.isHidden"
-              :active-value="1"
-              :inactive-value="0"
+              :active-value="0"
+              :inactive-value="1"
             />
           </el-form-item>
           <el-form-item label="是否外链：">
@@ -177,6 +177,7 @@ import {
   updateMenu,
 } from '@/api/auth/menu'
 import IconSelect from '@/components/IconSelect/index.vue'
+import { RESPONSE_SUCCESS_CODE } from '@/api'
 
 const filterText = ref('')
 const treeRef = ref<InstanceType<typeof ElTree>>()
@@ -268,7 +269,7 @@ const btnBatchDeleteMenu = () => {
 
 const menuTree = async () => {
   const result: MenuTreeResponse = await getMenuTree()
-  if (result.code === 200) {
+  if (result.code === RESPONSE_SUCCESS_CODE) {
     data.value = result.data
   } else {
     ElMessage.error(result.message)
@@ -280,24 +281,24 @@ onMounted(() => {
 })
 
 const ruleFormRef = ref<FormInstance>()
-const form = reactive<AddOrUpdateMenuRequest>({
+const form = reactive({
   id: 0,
-  pid: 1,
+  pid: null,
   menuName: '',
   menuCode: '',
   menuIcon: '',
   component: '',
   path: '',
   type: 1,
-  status: 1,
-  isHidden: 1,
+  status: 0,
+  isHidden: 0,
   sort: 0,
   isExternal: 0,
 })
 const rules = reactive<FormRules>({
   menuName: { required: true, message: '菜单名称不能为空', trigger: 'blur' },
   menuCode: { required: true, message: '菜单编码不能为空', trigger: 'blur' },
-  pid: { required: true, message: '父级菜单不能为空', trigger: 'blur' },
+  // pid: { required: true, message: '父级菜单不能为空', trigger: 'blur' },
 })
 const loading = ref<boolean>(false)
 const popoverVisible = ref<boolean>(false)
@@ -315,7 +316,7 @@ const onSubmit = async () => {
   if (id === 0) {
     // 新增
     const result = await addMenu(form)
-    if (result.code === 200) {
+    if (result.code === RESPONSE_SUCCESS_CODE) {
       ElMessage.success('新增成功')
       menuTree()
     } else {
@@ -323,8 +324,8 @@ const onSubmit = async () => {
     }
   } else {
     // 修改
-    const result = await updateMenu(form)
-    if (result.code === 200) {
+    const result = await updateMenu(id, form)
+    if (result.code === RESPONSE_SUCCESS_CODE) {
       ElMessage.success('修改成功')
       menuTree()
     } else {
@@ -336,15 +337,15 @@ const onSubmit = async () => {
 
 const resetForm = () => {
   form.id = 0
-  form.pid = 1
+  form.pid = 0
   form.menuName = ''
   form.menuCode = ''
   form.menuIcon = ''
   form.component = ''
   form.path = ''
   form.type = 1
-  form.status = 1
-  form.isHidden = 1
+  form.status = 0
+  form.isHidden = 0
   form.sort = 0
   form.isExternal = 0
 }

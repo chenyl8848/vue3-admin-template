@@ -5,7 +5,8 @@ import {
   LoginResponse,
   UserInfoResponse,
 } from '@/api/auth/user/type'
-import { getUserInfo, login } from '@/api/auth/user/index'
+import { getUserInfo } from '@/api/auth/user/index'
+import { login } from '@/api/auth/login/index'
 import { GET_TOKEN, REMOVE_TOKEN, SET_TOKEN } from '@/utils/token'
 import { constantRoute } from '@/router/routes'
 import { UserState } from '@/store/module/types/type'
@@ -129,8 +130,6 @@ const generateDynamicRoutes = (
       meta: {
         title: menu.menuName,
         icon: menu.menuIcon,
-        // isHidden: menu.isHidden === 1? false : true,
-        // isExternal: menu.isExternal ===  0? false : true
         isHidden: menu.isHidden === SysMenuEnum.HIDDEN,
         isExternal: menu.isExternal === SysMenuEnum.EXTERNAL,
       },

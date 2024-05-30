@@ -1,14 +1,14 @@
 import { Response } from '@/api/type'
 
 export enum SysMenuEnum {
-  HIDDEN = 0,
-  NO_HIDDEN = 1,
+  NO_HIDDEN = 0,
+  HIDDEN = 1,
   NO_EXTERNAL = 0,
   EXTERNAL = 1,
   MENU = 1,
   BUTTON = 2,
-  DISABLE = 0,
-  ENABLE = 1,
+  ENABLE = 0,
+  DISABLE = 1,
 }
 
 export interface SysMenu {
@@ -30,7 +30,6 @@ export interface SysMenu {
 }
 
 export interface AddOrUpdateMenuRequest {
-  id?: number
   pid?: number
   menuName: string
   menuCode: string

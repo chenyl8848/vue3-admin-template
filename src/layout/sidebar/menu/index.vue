@@ -29,7 +29,7 @@
       <el-menu-item
         :index="item.children[0].path"
         v-if="!item.children[0].meta.isHidden"
-        @click="routeJump(item)"
+        @click="routeJump(item.children[0])"
       >
         <!--        <el-icon>-->
         <!--          <component :is="item.children[0].meta.icon"></component>-->
@@ -75,7 +75,7 @@
 
 <script lang="ts" setup>
 import { RouteRecordRaw, useRouter } from 'vue-router'
-import { onMounted, reactive, ref, watch } from 'vue'
+import { onMounted, reactive, ref, watch,defineProps } from 'vue'
 import { SysMenuEnum } from '@/api/auth/menu/type'
 import $mitt from '@/utils/mitt'
 

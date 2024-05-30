@@ -43,19 +43,18 @@ export interface SysUser {
   version: number
   username: string
   password: string
-  name: string
+  nickName: string
   phone: string
-  wareId: number
-  roleName: string
+  email: string
 }
 
 // 新增用户请求实体
 export interface AddOrUpdateUserRequest {
   username: string
-  name: string
+  nickName: string
   password: string
-  phone: string
-  id?: number
+  phone: string,
+  email: string
 }
 
 // 获取用户信息接口响应参数类型

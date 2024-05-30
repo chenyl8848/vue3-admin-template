@@ -5,15 +5,15 @@ import { AddOrUpdateMenuRequest, MenuTreeResponse } from '@/api/auth/menu/type'
 import { Response } from '@/api/type'
 
 enum API {
-  GET_MENU_TREE_URL = '/sysmenu/menuTree',
-  ADD_MENU_URL = '/sysmenu/add',
-  UPDATE_MENU_URL = '/sysmenu/update',
-  DELETE_MENU_URL = '/sysmenu/delete',
-  BATCH_DELETE_MENU_URL = '/sysmenu/batchDelete',
+  GET_MENU_TREE_URL = '/sysmenu/',
+  ADD_MENU_URL = '/sysmenu/',
+  UPDATE_MENU_URL = '/sysmenu/',
+  DELETE_MENU_URL = '/sysmenu/',
+  BATCH_DELETE_MENU_URL = '/sysmenu/',
 }
 
 export const getMenuTree = () =>
-  request.post<MenuTreeResponse>(API.GET_MENU_TREE_URL)
+  request.get<MenuTreeResponse>(API.GET_MENU_TREE_URL)
 
 export const addMenu = (requestData: AddOrUpdateMenuRequest) =>
   request.post<AddOrUpdateMenuRequest, Response<null>>(
@@ -21,14 +21,14 @@ export const addMenu = (requestData: AddOrUpdateMenuRequest) =>
     requestData,
   )
 
-export const updateMenu = (requestData: AddOrUpdateMenuRequest) =>
-  request.post<AddOrUpdateMenuRequest, Response<null>>(
-    API.UPDATE_MENU_URL,
+export const updateMenu = (id: number, requestData: AddOrUpdateMenuRequest) =>
+  request.put<AddOrUpdateMenuRequest, Response<null>>(
+    `${API.UPDATE_MENU_URL}/${id}`,
     requestData,
   )
 
-export const deleteMenu = (requestData: number) =>
-  request.post<number, Response<null>>(`${API.DELETE_MENU_URL}/${requestData}`)
+export const deleteMenu = (id: number) =>
+  request.delete<number, Response<null>>(`${API.DELETE_MENU_URL}/${id}`)
 
 export const batchDeleteMenu = (requestData: Array<number>) =>
-  request.post<number, Response<null>>(API.BATCH_DELETE_MENU_URL, requestData)
+  request.delete<number, Response<null>>(API.BATCH_DELETE_MENU_URL, requestData)

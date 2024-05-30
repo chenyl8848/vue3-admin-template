@@ -61,7 +61,7 @@ let $route = useRoute()
 // 定义变量控制登录按钮加载效果
 let loading = ref(false)
 // 定义登录表单
-let loginForm = reactive({ username: 'superAdmin', password: '123456' })
+let loginForm = reactive({ username: 'admin', password: '123456' })
 // 获取 el-form 组件
 const loginFormRef = ref<FormInstance>()
 

@@ -39,6 +39,7 @@ import Setting from '@/layout/navbar/setting/index.vue'
   .navbar-right {
     display: flex;
     align-items: center;
+    margin-right: 16px;
   }
 }
 
