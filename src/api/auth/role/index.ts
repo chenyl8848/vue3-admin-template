@@ -37,8 +37,8 @@ export const getRoleById = (id: number) =>
 export const addRole = (requestData: AddOrUpdateRoleRequest) =>
   request.post<any, Response<null>>(API.ADD_ROLE_URL, requestData)
 
-export const updateRole = (requestData: AddOrUpdateRoleRequest) =>
-  request.post<any, Response<null>>(API.UPDATE_ROLE_URL, requestData)
+export const updateRole = (id: number, requestData: AddOrUpdateRoleRequest) =>
+  request.put<any, Response<null>>(`${API.UPDATE_ROLE_URL}/${id}`, requestData)
 
 export const deleteRole = (id: number) =>
   request.delete<any, Response<null>>(`${API.DELETE_ROLE_URL}/${id}`)

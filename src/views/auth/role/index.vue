@@ -172,7 +172,6 @@ import {
 import {
   AddOrUpdateRoleRequest,
   SysRolePageRequest,
-  GetRoleListResponse,
   SysRoleQueryRequest,
   SysRole,
   SysRolePageResponse,
@@ -187,6 +186,7 @@ import {
 import { MenuTreeResponse, SysMenu } from '@/api/auth/menu/type'
 import { getMenuTree } from '@/api/auth/menu'
 import { Response } from '@/api/type'
+import { RESPONSE_SUCCESS_CODE } from '@/api'
 
 const queryForm = reactive<SysRoleQueryRequest>({
   roleName: '',
@@ -209,7 +209,7 @@ const search = async () => {
     queryParams: queryForm,
   }
   const result: SysRolePageResponse = await getRolePageList(requestData)
-  if (result.code === 200) {
+  if (result.code === RESPONSE_SUCCESS_CODE) {
     tableData.value = result.data.records
     tableTotal.value = result.data.total
   } else {
@@ -229,7 +229,7 @@ const btnAddRole = () => {
 
 const btnUpdateRole = async (row: SysRole) => {
   const result = await getRoleById(row.id)
-  if (result.code === 200) {
+  if (result.code === RESPONSE_SUCCESS_CODE) {
     form.roleName = result.data.roleName
     form.roleCode = result.data.roleCode
     form.remark = result.data.remark
@@ -249,7 +249,7 @@ const btnDeleteRole = async (row: SysRole) => {
   })
     .then(async () => {
       const result = await deleteRole(row.id)
-      if (result.code === 200) {
+      if (result.code === RESPONSE_SUCCESS_CODE) {
         ElMessage({
           type: 'success',
           message: '删除成功',
@@ -309,8 +309,7 @@ const dialogConfirm = async () => {
     }
   } else {
     // 修改
-    requestData.id = form.id
-    const result = await updateRole(requestData)
+    const result = await updateRole(id, requestData)
     if (result.code === 200) {
       ElMessage.success('修改成功')
       loading.value = false

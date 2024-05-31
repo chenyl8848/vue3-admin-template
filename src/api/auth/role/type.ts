@@ -18,7 +18,6 @@ export interface SysRole {
 }
 
 export interface AddOrUpdateRoleRequest {
-  id?: number
   roleCode: string
   roleName: string
   remark: string
