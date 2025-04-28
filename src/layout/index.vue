@@ -1,27 +1,26 @@
 <template>
-  <div class="layout-container">
-    <div class="layout-sidebar" :class="{ fold: isFold }">
+  <div class='layout-container'>
+    <div class='layout-sidebar' :class='{ fold: isFold }'>
       <Sidebar></Sidebar>
     </div>
-    <div class="layout-navbar" :class="{ fold: isFold }">
+    <div class='layout-navbar' :class='{ fold: isFold }'>
       <Navbar></Navbar>
     </div>
-    <div class="layout-main" :class="{ fold: isFold }">
+    <div class='layout-main' :class='{ fold: isFold }'>
       <Main></Main>
     </div>
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang='ts' setup>
 import Sidebar from '@/layout/sidebar/index.vue'
 import Navbar from '@/layout/navbar/index.vue'
 import Main from '@/layout/main/index.vue'
-import TagsView from '@/layout/navbar/tagsview/index.vue'
 
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import $mitt from '@/utils/mitt'
 
-let isFold = ref()
+let isFold = ref(false)
 onMounted(() => {
   $mitt.on('isFold', (params: boolean) => {
     isFold.value = params
@@ -29,7 +28,7 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang='scss' scoped>
 .layout-container {
   width: 100%;
   height: 100vh;

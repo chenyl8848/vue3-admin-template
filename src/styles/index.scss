@@ -1,3 +1,14 @@
 // 引入默认清楚样式
 @import "./reset.scss";
 
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+.mgb-12px {
+  margin-bottom: 12px;
+}

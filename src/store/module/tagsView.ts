@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { TagsView } from '@/store/module/types/type'
 import { ref } from 'vue'
 
-let useTagsViewStore = defineStore('tagsView', () => {
+const useTagsViewStore = defineStore('tagsView', () => {
   let visitedViews = ref<Array<TagsView>>([
     {
       title: '首页',

@@ -1,7 +1,7 @@
 // 全局路由首位
 import router from '@/router'
 import store from '@/store'
-import { GET_TOKEN } from '@/utils/token'
+import { GET_TOKEN, REMOVE_TOKEN } from '@/utils/token'
 import useUserStore from '@/store/module/user'
 import setting from '@/setting'
 import NProgress from 'nprogress'
@@ -37,6 +37,7 @@ router.beforeEach(async (to, from, next) => {
           next({ ...to })
         } catch (error) {
           console.log(error)
+          REMOVE_TOKEN()
           next({ path: '/login' })
         }
       }

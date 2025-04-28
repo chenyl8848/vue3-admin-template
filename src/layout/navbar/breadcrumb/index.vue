@@ -1,6 +1,6 @@
 <template>
   <!-- navbar 伸展框  -->
-  <el-icon style="margin-right: 12px" @click="changeIcon">
+  <el-icon style="margin-right: 12px;cursor: pointer" @click="changeIcon">
     <component :is="isFold ? 'Expand' : 'Fold'"></component>
   </el-icon>
   <!-- navbar 面包屑  -->
@@ -8,7 +8,6 @@
     <el-breadcrumb-item
       v-for="(item, index) in $route.matched"
       :key="index"
-      :to="item.path"
       v-show="item.meta.title"
     >
       <!--      <el-icon>-->
@@ -32,7 +31,7 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import $mitt from '@/utils/mitt'
 
-let $route = useRoute()
+const $route = useRoute()
 
 // 是否折叠
 let isFold = ref(false)
