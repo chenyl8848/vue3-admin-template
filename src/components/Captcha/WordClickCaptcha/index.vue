@@ -19,8 +19,8 @@
 
 <script lang="ts" setup>
 // 刷新验证码
-import { CaptchaResponse, CaptchaType } from '@/api/auth/captcha/type'
-import { checkCaptcha, generateCaptcha } from '@/api/auth/captcha'
+import { CaptchaResponse, CaptchaType } from '@/api/system/captcha/type'
+import { checkCaptcha, generateCaptcha } from '@/api/system/captcha'
 import { ElMessage } from 'element-plus'
 import { onMounted, ref } from 'vue'
 import { Response } from '@/api/type'

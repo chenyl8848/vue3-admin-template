@@ -25,12 +25,12 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import { checkCaptcha, generateCaptcha } from '@/api/auth/captcha'
+import { checkCaptcha, generateCaptcha } from '@/api/system/captcha'
 import {
   CaptchaResponse,
   CaptchaType,
   CheckCaptchaRequest,
-} from '@/api/auth/captcha/type'
+} from '@/api/system/captcha/type'
 import { Response } from '@/api/type'
 import { ElMessage } from 'element-plus'
 import moment from 'moment'

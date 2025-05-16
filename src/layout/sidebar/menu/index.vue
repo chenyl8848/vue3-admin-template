@@ -76,7 +76,7 @@
 <script lang="ts" setup>
 import { RouteRecordRaw, useRouter } from 'vue-router'
 import { onMounted, reactive, ref, watch,defineProps } from 'vue'
-import { SysMenuEnum } from '@/api/auth/menu/type'
+import { SysMenuEnum } from '@/api/system/menu/type'
 import $mitt from '@/utils/mitt'
 
 defineProps(['menuList'])

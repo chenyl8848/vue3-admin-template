@@ -1,11 +1,4 @@
-import {
-  PageDataResponse,
-  PageRequest,
-  PageResponse,
-  Response,
-} from '../../type'
-import { SysMenu } from '@/api/auth/menu/type'
-import { SysRole } from '@/api/auth/role/type'
+import { Response } from '../../type'
 
 // 登录接口请求参数类型
 export interface LoginRequest {

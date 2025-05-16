@@ -21,3 +21,10 @@ export interface PageDataResponse<T> {
 export interface PageResponse<T> extends Response<PageDataResponse<T>> {
   data: PageDataResponse<T>
 }
+
+export interface BaseModel {
+  id: number
+  createTime?: string
+  updateTime?: string
+  version?: number
+}

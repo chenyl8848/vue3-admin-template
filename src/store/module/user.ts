@@ -1,18 +1,16 @@
 // 引入 pinia
 import { defineStore } from 'pinia'
-import {
-  LoginRequest,
-  LoginResponse,
-  UserInfoResponse,
-} from '@/api/auth/user/type'
-import { getUserInfo } from '@/api/auth/user/index'
-import { login } from '@/api/auth/login/index'
+import { UserInfoResponse } from '@/api/system/user/type'
+import userApi from '@/api/system/user/index'
+import { login } from '@/api/system/login/index'
 import { GET_TOKEN, REMOVE_TOKEN, SET_TOKEN } from '@/utils/token'
 import { constantRoute } from '@/router/routes'
 import { UserState } from '@/store/module/types/type'
 import { RouteRecordRaw } from 'vue-router'
-import { SysMenu, SysMenuEnum } from '@/api/auth/menu/type'
+import { SysMenuEnum, SysMenuExternalEnum, SysMenuHiddenEnum, SysMenuModel } from '@/api/system/menu/type'
 import router from '@/router'
+import { LoginRequest, LoginResponse } from '@/api/system/login/type'
+import { RESPONSE_SUCCESS_CODE } from '@/type'
 
 const modules = import.meta.glob('@/**/*.vue')
 
@@ -29,14 +27,14 @@ const useUserStore = defineStore('User', {
   },
   actions: {
     // 用户登录
-    userLogin: async function (data: LoginRequest) {
+    userLogin: async function(data: LoginRequest) {
       const result: LoginResponse = await login(data)
       // const result: LoginResponse = {
       //   code: 200,
       //   message: '登录成功',
       //   data: 'Admin Token',
       // }
-      if (result.code === 200) {
+      if (result.code === RESPONSE_SUCCESS_CODE) {
         this.token = result.data
         SET_TOKEN(result.data)
 
@@ -47,8 +45,8 @@ const useUserStore = defineStore('User', {
     },
 
     // 获取用户信息
-    getUserInfo: async function () {
-      const result: UserInfoResponse = await getUserInfo()
+    getUserInfo: async function() {
+      const result: UserInfoResponse = await userApi.getUserInfo()
       // const result: UserInfoResponse = {
       //   code: 200,
       //   message: '获取用户信息成功',
@@ -65,7 +63,7 @@ const useUserStore = defineStore('User', {
       //     token: 'Admin Token',
       //   },
       // }
-      if (result.code === 200) {
+      if (result.code === RESPONSE_SUCCESS_CODE) {
         this.username = result.data.username
         this.avatar =
           result.data.avatar ||
@@ -83,7 +81,7 @@ const useUserStore = defineStore('User', {
     },
 
     // 用户退出登录
-    userLogout: function () {
+    userLogout: function() {
       REMOVE_TOKEN()
       this.username = ''
       this.avatar = ''
@@ -110,7 +108,7 @@ const mergeMenuRoutes = (
 
 // 生成动态路由
 const generateDynamicRoutes = (
-  menus: Array<SysMenu>,
+  menus: Array<SysMenuModel>,
 ): Array<RouteRecordRaw> => {
   let routes = []
   menus.forEach((menu) => {
@@ -121,7 +119,7 @@ const generateDynamicRoutes = (
     let route = {
       // 路由的路径
       path:
-        menu.isExternal === SysMenuEnum.EXTERNAL ? '/' + menu.path : menu.path,
+        menu.isExternal === SysMenuHiddenEnum.YES ? '/' + menu.path : menu.path,
       // 路由名
       name: menu.menuCode,
       // 路由所在组件
@@ -130,8 +128,8 @@ const generateDynamicRoutes = (
       meta: {
         title: menu.menuName,
         icon: menu.menuIcon,
-        isHidden: menu.isHidden === SysMenuEnum.HIDDEN,
-        isExternal: menu.isExternal === SysMenuEnum.EXTERNAL,
+        isHidden: menu.isHidden === SysMenuHiddenEnum.YES,
+        isExternal: menu.isExternal === SysMenuExternalEnum.YES,
       },
       // 路由的子路由
       children: children.length > 0 ? children : null,

@@ -3,7 +3,7 @@ import {
   CaptchaResponse,
   CaptchaType,
   CheckCaptchaRequest,
-} from '@/api/auth/captcha/type'
+} from '@/api/system/captcha/type'
 import { Response } from '@/api/type'
 
 enum API {
